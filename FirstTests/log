@@ -1,0 +1,8 @@
+# Window :
+	The window can be resized, it keeps the same ratio. The window coordinates can be mapped to the GL viewport coordinates, resizing the window doesn't break it.
+
+# Rectangles :
+	Methods of getX/Y and getHeight/Width moved from Block to Rectangle to generalize the behaviour.
+
+# Blocks :
+	Collision test added, works great.
