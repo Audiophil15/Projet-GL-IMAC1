@@ -16,8 +16,7 @@ std::vector<Rectangle> creaWithFile(std::string namefile){
 	FILE* file = fopen(namefile.c_str() , "r");
 
 
-	int v, d1, d2, d3, d4, i;
-	i = 0;
+	int v, d1, d2, d3, d4;
 	do {
 	v = 0;
 	v += fscanf(file, "%d", &d1);
