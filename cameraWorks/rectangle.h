@@ -29,6 +29,8 @@ class Rectangle{
 		double getPosY();
 		double getWidth();
 		double getHeight();
+		double getCenterX();
+		double getCenterY();
 		void props();
 };
 
