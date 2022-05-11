@@ -1,6 +1,6 @@
 CC = g++
 CXXFLAGS = -g -MMD
-LIBFLAGS = -lSDL2 -lGL -lGLU
+LIBFLAGS = -lSDL2 -lGL -lGLU -lm
 SOURCES = $(wildcard *.cpp)
 OBJ = $(SOURCES:.cpp=.o)
 DEPENDS = $(SOURCES:.cpp=.d)

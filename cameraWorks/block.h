@@ -31,11 +31,14 @@ class Block : public Rectangle {
 		void moveto(glm::vec2);
 		void moverel(glm::vec2);
 		int collidesWith(Block);
-		int isOver(Block);
-		int isInlinewith(Block);
 		int isLeftTo(Block);
-		int isRightTo(Block);
-		int isOn(Block);
+		int isHorizontalTo(Block b);
+		int isVerticalTo(Block b);
+		int isLeftTo(Block b);
+		int isRightTo(Block b);
+		int isOver(Block b);
+		int isUnder(Block b);
+		int collidesNextTo(Block b);
 
 		void jump();
 		void updatePosition(std::vector<Block> environment, double dt);

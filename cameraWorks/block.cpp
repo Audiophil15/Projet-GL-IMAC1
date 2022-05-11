@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "block.h"
 
 Block::Block():Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(1){}
@@ -60,51 +61,87 @@ void Block::updatePosition(std::vector<Block> environment, double dt){
 	this->speed.y += this->acc.y*dt;
 	this->position.x += this->speed.x*dt;
 	this->position.y += this->speed.y*dt;
-	// this->moverel(this->speed.x*dt, this->speed.y*dt);
 
 	for (Block b : environment){
-		printf("Coll : %d\n", this->collidesWith(b));
+		printf("Collision : %d", this->collidesWith(b)); //DEBUG
 
 		if (this->collidesWith(b)){
+			this->position.y -= this->speed.y*dt;
+			this->position.x -= this->speed.x*dt;
 
-			if (this->isOver(b)){
-				this->position.y -= this->speed.y*dt;
-				this->speed.y = 0;
-				this->isJumping = 0;
-			}
-			if (this->isInlinewith(b)){
-				this->position.x -= this->speed.x*dt;
+			printf(" : "); //DEBUG
+
+			if (this->collidesNextTo(b)){
+				printf("side"); //DEBUG
 				this->speed.x = 0;
+			} else {
+				printf("top/bottom"); //DEBUG
+				this->speed.y = 0;
+				if (this->isOver(b)){
+					this->isJumping = 0;
+				}
 			}
+			this->position.y += this->speed.y*dt;
+			this->position.x += this->speed.x*dt;
 
 		}
+		printf("\n");
 
 	}
 
-	printf("\n");
-	// this->moveto(this->position);
 }
 
 int Block::collidesWith(Block b){
 	return !(this->getPosX() > b.getPosX()+b.getWidth() || this->getPosX()+this->getWidth() < b.getPosX() || this->getPosY() > b.getPosY()+b.getHeight() || this->getPosY()+this->getHeight() < b.getPosY());
 }
 
-int Block::isOver(Block b){
-	return (this->getPosY() >= b.getPosY()+b.getHeight()/2 && this->getPosX()<b.getPosX()+b.getWidth() && this->getPosX()+this->getWidth() > this->getPosX());
-}
-
-int Block::isInlinewith(Block b){
+int Block::isHorizontalTo(Block b){
 	return (this->getPosY()<b.getPosY()+b.getHeight() && this->getPosY()+this->getHeight() > this->getPosY());
 }
 
+int Block::isVerticalTo(Block b){
+	return (this->getPosX()<b.getPosX()+b.getWidth() && this->getPosX()+this->getWidth() > this->getPosX());
+}
+
 int Block::isLeftTo(Block b){
-	return (this->isInlinewith(b) && this->getPosX()<b.getPosX());
+	return (this->getCenterX()<b.getCenterX());
 }
 
 int Block::isRightTo(Block b){
-	return (this->isInlinewith(b) && this->getPosX()>b.getPosX());
+	return (this->getCenterX()>b.getCenterX());
 }
 
-int Block::isOn(Block b){
-	return (this->collidesWith(b) && this->isOver(b));
+int Block::isOver(Block b){
+	return (this->getCenterY()>b.getCenterY());
+}
+
+int Block::isUnder(Block b){
+	return (this->getCenterY()<b.getCenterY());
+}
+
+int Block::collidesNextTo(Block b){
+
+	// BUGGY BUG Y BUG
+
+	double a, x1, x2, y1, y2;
+	a = this->speed.y/this->speed.x;
+	if (this->isLeftTo(b)){
+		x1 = this->getPosX()+this->getWidth();
+		x2 = b.getPosX();
+	} else {
+		x1 = b.getPosX()+b.getWidth();
+		x2 = this->getPosX();
+	}
+
+	if (this->isUnder(b)){
+		y1 = this->getPosY()+this->getHeight();
+		y2 = b.getPosY();
+	} else {
+		x1 *= -1;
+		x2 *= -1;
+		y1 = b.getPosY()+b.getHeight();
+		y2 = this->getPosY();
+	}
+
+	return (a*(x2-x1) >= y2-y1);
 }

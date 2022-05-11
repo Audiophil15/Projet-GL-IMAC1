@@ -40,3 +40,11 @@ double Rectangle::getWidth(){
 double Rectangle::getHeight(){
 	return this->size.y;
 }
+
+double Rectangle::getCenterX(){
+	return this->getPosX()+this->getWidth()/2;
+}
+
+double Rectangle::getCenterY(){
+	return this->getPosY()+this->getHeight()/2;
+}
