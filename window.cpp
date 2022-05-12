@@ -1,4 +1,4 @@
 #include "window.h"
 
-Window::Window():scrW(80), scrH(40){};
+Window::Window():scrW(900), scrH(450){};
 

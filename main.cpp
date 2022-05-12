@@ -3,13 +3,14 @@
 #include <GL/glu.h>
 #include <unistd.h>
 #include <stdio.h>
-
+#include <vector>
 #include "color.h"
 #include "block.h"
 #include "rectangle.h"
 #include "window.h"
 #include "graphics.h"
 #include "chara.h"
+#include "level.h"
 
 void axis(int baseW, int baseH);
 
@@ -32,18 +33,25 @@ int main(){
 
 	Block* charaTab = (Block*)malloc(sizeof(Block)*chara.numberChara);
 
-	Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	//Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
-	Block plateforme(0, 0, win.scrW, win.scrH/5);
-	Block b1(0, win.scrH/5, 5, 5, 0.2, 0.5, 0.1);
-	Block b2(win.scrW-50, win.scrH/5, 5, 5, 0.1, 0.5, 0.3);
+	Block plateforme(0, 0, win.baseW, win.baseH/5);
+	/*Block b1(0, win.baseH/5, 5, 5, 0.2, 0.5, 0.1);
+	Block b2(win.baseW-50, win.baseH/5, 5, 5, 0.1, 0.5, 0.3);*/
 
+	std::vector<Block>myblocks = creaWithFile("levels/level1");
 	std::vector<Block> env;
-	env.push_back(plateforme);
-	env.push_back(b1);
-	env.push_back(b2);
+	//env.push_back(plateforme);
+	/*env.push_back(b1);
+	env.push_back(b2);*/
+
+	for (int i = 0; i < myblocks.size(); i++){
+		env.push_back(myblocks.at(i));
+	}
+	
 
 	charaTab[0] = perso1;
 	charaTab[1] = perso2;
@@ -56,6 +64,7 @@ int main(){
 
 	double dt = 1.0/60;
 	int accelFactor = 50;
+
 
 	while(!quit){
 
@@ -108,6 +117,8 @@ int main(){
 			}
 		}
 
+	
+
 		selectedBlock.isMovingLeft = (int)keystate[SDL_SCANCODE_LEFT];
 		selectedBlock.isMovingRight = (int)keystate[SDL_SCANCODE_RIGHT];
 
@@ -132,6 +143,7 @@ int main(){
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+
 		// camera
 
 		glColor3f(1,0,0);
@@ -140,10 +152,15 @@ int main(){
 
 		glPushMatrix();
 
+
+
 			glTranslatef(-camx + win.baseW/2, -camy + win.baseH/5, 0);
 			glColor3f(0,1,0);
 			axis(win.baseW, win.baseH);
 
+			for (int i = 0; i < myblocks.size(); i++){
+				myblocks.at(i).draw();
+			}
 			selectedBlock.draw();
 			for (Block b : env){
 				b.draw();
@@ -153,6 +170,9 @@ int main(){
 			// }
 
 		glPopMatrix();
+
+
+
 		SDL_GL_SwapWindow(win.SDLWindow);
 	}
 

@@ -50,11 +50,11 @@ bool Quadtree::isFilled(){
 
 
 void Quadtree::insertInChildren(Block &b){
-    if(b.getCenter().x<xmax/2){
+    if(b.getCenterX()<xmax/2){
         //left
         insertLeft(b);
 
-        if(b.getPosX()+b.getwidth()>xmax/2){
+        if(b.getPosX()+b.getWidth()>xmax/2){
             //also right
             insertRight(b);
         }
@@ -72,11 +72,11 @@ void Quadtree::insertInChildren(Block &b){
 }
 
 void Quadtree::insertRight(Block &b){
-    if(b.getCenter().y<ymax/2){
+    if(b.getCenterY()<ymax/2){
         //in bottom right corner
         br->insert(b);
 
-        if(b.getPosY()+b.getheight()>ymax/2){
+        if(b.getPosY()+b.getHeight()>ymax/2){
             //also in the top right corner
             tr->insert(b);
         }
@@ -94,11 +94,11 @@ void Quadtree::insertRight(Block &b){
 }
 
 void Quadtree::insertLeft(Block &b){
-    if(b.getCenter().y<ymax/2){
+    if(b.getCenterY()<ymax/2){
         //in the bottom left corner
         bl->insert(b);
 
-        if(b.getPosY()+b.getheight()>ymax/2){
+        if(b.getPosY()+b.getHeight()>ymax/2){
             //also in the top left corner
             tl->insert(b);
         }

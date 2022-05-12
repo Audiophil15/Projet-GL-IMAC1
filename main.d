@@ -1,1 +1,2 @@
-main.o: main.cpp color.h block.h rectangle.h window.h graphics.h chara.h
+main.o: main.cpp color.h block.h rectangle.h window.h graphics.h chara.h \
+ level.h
