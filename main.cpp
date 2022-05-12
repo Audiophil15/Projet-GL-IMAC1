@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <unistd.h>
@@ -56,6 +58,19 @@ int main(){
 
 	double dt = 1.0/60;
 	int accelFactor = 50;
+
+
+	//texture menu fond
+	SDL_Surface* img= IMG_Load("./src/menu.png");
+	
+
+	if(img==NULL){
+		exit(-1);
+	}
+
+	GLuint menu;
+
+	menu = initializeTexture(img);
 
 	while(!quit){
 
@@ -132,8 +147,11 @@ int main(){
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		// camera
 
+		textureMenu(menu, win);
+
+
+		// camera
 		glColor3f(1,0,0);
 		axis(win.baseW, win.baseH);
 
@@ -159,6 +177,8 @@ int main(){
 	SDL_GL_DeleteContext(win.GLContext);
 	SDL_DestroyWindow(win.SDLWindow);
 	SDL_Quit();
+	
+	deleteTexture(&menu, img);
 
 }
 

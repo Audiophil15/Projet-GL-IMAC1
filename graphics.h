@@ -12,5 +12,9 @@ int mapWindowToGLcoordinateY(int windowCoord, Window w);
 void windowResize(int newWidth, int newHeight, Window& win);
 void onWindowResized(Window w);
 
+GLuint initializeTexture(SDL_Surface* img);
+void textureMenu(GLuint texture, Window win);
+void deleteTexture(GLuint *texture, SDL_Surface* img);
+
 #endif
 

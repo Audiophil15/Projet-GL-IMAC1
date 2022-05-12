@@ -92,3 +92,49 @@ void onWindowResized(Window w){
 	0, w.baseW,
 	0, w.baseH);
 }
+
+GLuint initializeTexture(SDL_Surface* img){
+	GLuint texture;
+
+	glGenTextures(1,&texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);	
+
+	return texture;
+}
+
+
+void textureMenu(GLuint texture, Window win){
+	//texture
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);
+            //coordonnées de texture
+            glTexCoord2f(1,1);
+            //coordonnées de position
+            glVertex2f(win.baseW, 0);
+            glTexCoord2f(1,0);
+            glVertex2f(win.baseW, win.baseH);
+            glTexCoord2f(0,0);
+            glVertex2f(0, win.baseH);
+            glTexCoord2f(0,1);
+            glVertex2f(0,0);
+        glEnd();
+
+		
+
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+}
+
+void deleteTexture(GLuint *texture, SDL_Surface* img){
+	SDL_FreeSurface(img);
+    glDeleteTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+}
