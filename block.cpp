@@ -86,9 +86,7 @@ void Block::updatePosition(std::vector<Block> environment, double dt){
 
 		}
 		printf("\n");
-
 	}
-
 }
 
 int Block::collidesWith(Block b){
@@ -129,8 +127,8 @@ int Block::collidesNextTo(Block b){
 		x1 = this->getPosX()+this->getWidth();
 		x2 = b.getPosX();
 	} else {
-		x1 = b.getPosX()+b.getWidth();
-		x2 = this->getPosX();
+		x1 = this->getPosX();
+		x2 = b.getPosX()+b.getWidth();
 	}
 
 	if (this->isUnder(b)){
@@ -139,8 +137,8 @@ int Block::collidesNextTo(Block b){
 	} else {
 		x1 *= -1;
 		x2 *= -1;
-		y1 = b.getPosY()+b.getHeight();
-		y2 = this->getPosY();
+		y1 = -(this->getPosY());
+		y2 = -(b.getPosY()+b.getHeight());
 	}
 
 	return (a*(x2-x1) >= y2-y1);

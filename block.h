@@ -31,7 +31,6 @@ class Block : public Rectangle {
 		void moveto(glm::vec2);
 		void moverel(glm::vec2);
 		int collidesWith(Block);
-		int isLeftTo(Block);
 		int isHorizontalTo(Block b);
 		int isVerticalTo(Block b);
 		int isLeftTo(Block b);
