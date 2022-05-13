@@ -63,19 +63,19 @@ void Block::updatePosition(std::vector<Block> environment, double dt){
 	this->position.y += this->speed.y*dt;
 
 	for (Block b : environment){
-		printf("Collision : %d", this->collidesWith(b)); //DEBUG
+		// printf("Collision : %d", this->collidesWith(b)); //DEBUG
 
 		if (this->collidesWith(b)){
 			this->position.y -= this->speed.y*dt;
 			this->position.x -= this->speed.x*dt;
 
-			printf(" : "); //DEBUG
+			// printf(" : "); //DEBUG
 
 			if (this->collidesNextTo(b)){
-				printf("side"); //DEBUG
+				// printf("side"); //DEBUG
 				this->speed.x = 0;
 			} else {
-				printf("top/bottom"); //DEBUG
+				// printf("top/bottom"); //DEBUG
 				this->speed.y = 0;
 				if (this->isOver(b)){
 					this->isJumping = 0;
@@ -85,7 +85,7 @@ void Block::updatePosition(std::vector<Block> environment, double dt){
 			this->position.x += this->speed.x*dt;
 
 		}
-		printf("\n");
+		// printf("\n");
 	}
 }
 

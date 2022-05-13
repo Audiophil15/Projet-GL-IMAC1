@@ -12,6 +12,7 @@
 #include "window.h"
 #include "graphics.h"
 #include "chara.h"
+#include "menu.h"
 
 void axis(int baseW, int baseH);
 
@@ -60,17 +61,20 @@ int main(){
 	int accelFactor = 50;
 
 
-	//texture menu fond
-	SDL_Surface* img= IMG_Load("./src/menu.png");
+	// //texture menu fond
+	// SDL_Surface* img= IMG_Load("./src/menu.png");
 	
 
-	if(img==NULL){
-		exit(-1);
-	}
+	// if(img==NULL){
+	// 	exit(-1);
+	// }
 
-	GLuint menu;
+	// GLuint menu;
 
-	menu = initializeTexture(img);
+	// menu = initializeTexture(img);
+
+	menu(win);
+
 
 	while(!quit){
 
@@ -148,7 +152,7 @@ int main(){
 		glLoadIdentity();
 
 
-		textureMenu(menu, win);
+		// textureMenu(menu, win);
 
 
 		// camera
@@ -178,7 +182,7 @@ int main(){
 	SDL_DestroyWindow(win.SDLWindow);
 	SDL_Quit();
 	
-	deleteTexture(&menu, img);
+	// deleteTexture(&menu, img);
 
 }
 

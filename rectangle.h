@@ -23,6 +23,8 @@ class Rectangle{
 		Rectangle(double pos, double size);
 		Rectangle(double x, double y, double w, double h);
 		Rectangle(double x, double y, double w, double h, double r, double g, double b);
+		
+		
 
 		void draw();
 		double getPosX();
@@ -33,5 +35,7 @@ class Rectangle{
 		double getCenterY();
 		void props();
 };
+
+
 
 #endif
