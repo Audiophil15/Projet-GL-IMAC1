@@ -11,6 +11,7 @@
 #include "graphics.h"
 #include "chara.h"
 #include "level.h"
+#include "quadtree.h"
 
 void axis(int baseW, int baseH);
 
@@ -38,12 +39,32 @@ int main(){
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
-	Block plateforme(0, 0, win.baseW, win.baseH/5);
+	//Block plateforme(0, 0, win.baseW, win.baseH/5);
 	/*Block b1(0, win.baseH/5, 5, 5, 0.2, 0.5, 0.1);
 	Block b2(win.baseW-50, win.baseH/5, 5, 5, 0.1, 0.5, 0.3);*/
 
+
 	std::vector<Block>myblocks = creaWithFile("levels/level1");
 	std::vector<Block> env;
+	Quadtree quad(-40,0,148, 80);
+	//Quadtree quad(0,0,40,40);
+
+	std::vector<Block> tab;
+	tab.push_back(Block(0, 15));
+	// tab.push_back(Block(10, 8));
+    /*tab.push_back(Block(21, 2));
+    tab.push_back(Block(24, 2));
+    tab.push_back(Block(27, 2));
+    tab.push_back(Block(30, 2));
+    tab.push_back(Block(33, 2));
+    tab.push_back(Block(21, 0, 8, 15));
+    tab.push_back(Block(0, 25, 8, 15));*/
+
+	quad.initialize(myblocks);
+	//quad.initialize(tab);
+	/**/
+	quad.depth();
+	
 	//env.push_back(plateforme);
 	/*env.push_back(b1);
 	env.push_back(b2);*/
@@ -67,6 +88,15 @@ int main(){
 
 
 	while(!quit){
+
+		//myblocks=quad.myblocks;
+		//quad.depth();
+		myblocks = quad.findChild(&quad, selectedBlock.getPosX(), selectedBlock.getPosY());
+
+		//myblocks = quad.findChild(&quad, 5, 26);
+		/*for (Block b : myblocks){
+			printf("%lf", b.getPosX());
+		}*/
 
 		while(SDL_PollEvent(&e)){
 			switch (e.type){
@@ -124,7 +154,7 @@ int main(){
 
 		// Updates physics variables
 
-		selectedBlock.updatePosition(env, dt);
+		selectedBlock.updatePosition(myblocks, dt);
 
 
 		// charaTab[chara.previousChara].updatePosition(env, dt);
@@ -158,9 +188,9 @@ int main(){
 			glColor3f(0,1,0);
 			axis(win.baseW, win.baseH);
 
-			for (int i = 0; i < myblocks.size(); i++){
+			/*for (int i = 0; i < myblocks.size(); i++){
 				myblocks.at(i).draw();
-			}
+			}*/
 			selectedBlock.draw();
 			for (Block b : env){
 				b.draw();

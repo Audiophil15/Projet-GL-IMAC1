@@ -24,7 +24,7 @@ std::vector<Block> creaWithFile(std::string namefile){
 	v += fscanf(file, "%d", &d3);
 	v += fscanf(file, "%d", &d4);
 	if (v == 4){
-		Block blocks(d1, d2, d3, d4);
+		Block blocks(d1, d2, d3, d4 );
 		//myblocks[i++] = rect;
 		myblocks.push_back(blocks);
 		}
