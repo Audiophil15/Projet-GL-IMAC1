@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <cmath>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -32,7 +33,7 @@ int main(){
 
 	Block* charaTab = (Block*)malloc(sizeof(Block)*chara.numberChara);
 
-	Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	Block perso1(win.scrW/2, win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
@@ -86,9 +87,9 @@ int main(){
 						}
 
 						if(chara.selectedChara> 0){
-							chara.previousChara= chara.selectedChara - 1;
+							chara.previousChara = chara.selectedChara - 1;
 						}else{
-							chara.previousChara =2;
+							chara.previousChara = 2;
 						}
 
 						selectedBlock = charaTab[chara.selectedChara];
@@ -127,6 +128,10 @@ int main(){
 
 		camx = selectedBlock.getPosX();
 		camy = selectedBlock.getPosY();
+		camx = std::max(0., camx-win.baseW/2);
+		// camx = min(camx, map.getWidth());
+		camy = std::max(0., camy-win.baseH/5);
+		// camx = min(camy, map.getHeight());
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
@@ -138,9 +143,9 @@ int main(){
 		axis(win.baseW, win.baseH);
 
 
-		glPushMatrix();
 
-			glTranslatef(-camx + win.baseW/2, -camy + win.baseH/5, 0);
+		glPushMatrix();
+			glTranslatef(-camx, -camy, 0);
 			glColor3f(0,1,0);
 			axis(win.baseW, win.baseH);
 
