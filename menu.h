@@ -6,6 +6,7 @@
 
 int menu(Window win);
 bool isIn(Rectangle choix, SDL_MouseButtonEvent click, Window win);
+bool isOver(Rectangle choix, SDL_MouseMotionEvent click, Window win);
 
 
 class Choice{
@@ -15,14 +16,13 @@ class Choice{
 	GLuint textureBack;
 	GLuint textureFront;
 
-	bool selectedChoice = 0;
-	int numberChoice;
 
 	Choice();
-	Choice(int nbChoice);
-	Choice(int nbChoice, bool slChoice);
-	Choice(int nbChoice, bool slChoice, Rectangle rect);
-	Choice(int nbChoice, bool slChoice, Rectangle rect, GLuint txtBack, GLuint txtFront);
+	Choice(Rectangle rect);
+	Choice(Rectangle rect, GLuint txtBack);
+	Choice(Rectangle rect, GLuint txtBack, GLuint txtFront);
+	
+
 
 };
 

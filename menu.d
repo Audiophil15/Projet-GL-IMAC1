@@ -1,1 +1,1 @@
-menu.o: menu.cpp window.h graphics.h rectangle.h color.h menu.h
+menu.o: menu.cpp window.h graphics.h menu.h rectangle.h color.h

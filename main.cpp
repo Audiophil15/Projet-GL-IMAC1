@@ -72,8 +72,32 @@ int main(){
 	// GLuint menu;
 
 	// menu = initializeTexture(img);
+	printf("le result is %d", menu(win));
+	int choix = menu(win);
 
-	menu(win);
+	switch (choix)
+	{
+	case 0:
+		printf("lalala play");
+		break;
+	
+	case 1:
+		printf("lalala rules");
+		break;
+
+	case 2:
+		printf("lalala options");
+		break;
+
+	case 3:
+		printf("lalala quit");
+		break;
+	
+	default:
+		break;
+	}
+
+	// menu(win);
 
 
 	while(!quit){

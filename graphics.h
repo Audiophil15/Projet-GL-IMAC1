@@ -2,6 +2,7 @@
 #define GRAPHICS_H
 
 #include "window.h"
+#include "menu.h"
 
 void initSDL();
 SDL_Window* initWindow(int width, int height);
@@ -12,8 +13,14 @@ int mapWindowToGLcoordinateY(int windowCoord, Window w);
 void windowResize(int newWidth, int newHeight, Window& win);
 void onWindowResized(Window w);
 
-GLuint initializeTexture(SDL_Surface* img);
-void textureMenu(GLuint texture, Window win);
+GLuint initializeTexure(SDL_Surface* img);
+void textureBackground(GLuint texture, Window win);
+
+void textureMenu(Choice texture);
+
+void textureMenuTop(Choice texture);
+
+
 void deleteTexture(GLuint *texture, SDL_Surface* img);
 
 #endif
