@@ -3,6 +3,7 @@
 #include "quadtree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <GL/gl.h>
 
 using namespace std;
 
@@ -11,10 +12,10 @@ Quadtree::Quadtree(int xmin, int ymin, int xmax, int ymax):xmin(xmin), ymin(ymin
 
 std::vector<Block> Quadtree::findChild(Quadtree *tree, double x, double y){
 
-        printf("xmax : %d", tree->xmax);
+        /*printf("xmax : %d", tree->xmax);
         printf("ymax : %d", tree->ymax);
         printf("xmin : %d", tree->xmin);
-        printf("ymin : %d \n", tree->ymin);
+        printf("ymin : %d \n", tree->ymin);*/
 
     if(!tree->isLeaf()){
 
@@ -35,7 +36,7 @@ std::vector<Block> Quadtree::findChild(Quadtree *tree, double x, double y){
         }
     }
     }
-    printf("size : %ld", tree->myblocks.size());
+    //printf("size : %ld", tree->myblocks.size());
     //exit(0);
     //return myblocks;
     return tree->myblocks;
@@ -59,18 +60,44 @@ void Quadtree::insert(Block &b){
 
 }
 
+void Quadtree::render(Quadtree *tree){
+    glColor3d(0,0,1);
+    glBegin(GL_LINE_LOOP);
+		glVertex2d(tree->xmin, tree->ymin);
+		glVertex2d(tree->xmax-tree->xmin, tree->ymin);
+		glVertex2d(tree->xmax-tree->xmin,  tree->ymax-tree->ymin);
+		glVertex2d(tree->xmin, tree->ymax-tree->ymin);
+	glEnd();
+
+    if (!tree->isLeaf()){
+    tree->render(tree->bl);
+    tree->render(tree->tl);
+    tree->render(tree->br);
+    tree->render(tree->tr);
+    }
+
+}
 
 void Quadtree::depth(){
     printf("depth call\n");
+    /*glBegin(GL_LINE_LOOP);
+		glVertex2d(this->xmin, this->ymin);
+		glVertex2d(this->xmax-this->xmin, this->ymin);
+		glVertex2d(this->xmax-this->xmin,  this->ymax-this->ymin);
+		glVertex2d(this->xmin, this->ymax-this->ymin);
+	glEnd();*/
+
+    /*Block rect(this->xmin, this->ymin, this->xmax-this->xmin, this->ymax-this->ymin);
+    rect.draw();*/
     if (!this->isLeaf()){
         this->bl->depth();
         this->br->depth();
         this->tl->depth();
         this->tr->depth();
     } else {
-        Rectangle rect(this->xmin, this->ymin, this->xmax-this->xmin, this->ymax-this->ymin);
-        rect.draw();
-        rect.props();
+        /*Block rect(this->xmin, this->ymin, this->xmax-this->xmin, this->ymax-this->ymin);
+        rect.draw();*/
+        //rect.props();
         printf("la taille du tableau : %ld \n", myblocks.size());
         for (Block b:this->myblocks){
             printf("%.2lf : %.2lf\n", b.getPosX(), b.getPosY());
@@ -98,7 +125,7 @@ bool Quadtree::isLeaf(){
 }
 
 bool Quadtree::isFilled(){
-    return (myblocks.size()>2);
+    return (myblocks.size()>4);
 }
 
 

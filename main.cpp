@@ -36,6 +36,8 @@ int main(){
 
 	//Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
 	Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+
+	//Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
@@ -45,8 +47,11 @@ int main(){
 
 
 	std::vector<Block>myblocks = creaWithFile("levels/level1");
+	//std::vector<Block>myblocks = creaWithFile("levels/level3");
 	std::vector<Block> env;
-	Quadtree quad(-40,0,148, 80);
+	//Quadtree quad(-40,0,94, 70);
+	//Quadtree quad(-40,0,285, 140);
+	//Quadtree quad(0,0,148, 80);
 	//Quadtree quad(0,0,40,40);
 
 	std::vector<Block> tab;
@@ -63,7 +68,7 @@ int main(){
 	quad.initialize(myblocks);
 	//quad.initialize(tab);
 	/**/
-	quad.depth();
+	//quad.depth();
 	
 	//env.push_back(plateforme);
 	/*env.push_back(b1);
@@ -178,7 +183,7 @@ int main(){
 
 		glColor3f(1,0,0);
 		axis(win.baseW, win.baseH);
-
+		
 
 		glPushMatrix();
 
@@ -191,10 +196,12 @@ int main(){
 			/*for (int i = 0; i < myblocks.size(); i++){
 				myblocks.at(i).draw();
 			}*/
+			
 			selectedBlock.draw();
 			for (Block b : env){
 				b.draw();
 			}
+			quad.render(&quad);
 			// for(int i=0; i< numberChara; i++){
 			// 	charaTab[i].draw();
 			// }

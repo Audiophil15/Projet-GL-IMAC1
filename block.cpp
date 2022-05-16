@@ -71,21 +71,22 @@ void Block::updatePosition(std::vector<Block> environment, double dt){
 
 			//printf(" : "); //DEBUG
 
-			if (this->collidesNextTo(b)){
-				//printf("side"); //DEBUG
-				this->speed.x = 0;
-			} else {
-				//printf("top/bottom"); //DEBUG
-				this->speed.y = 0;
+			this->position.y += this->speed.y*dt;
+			if (this->collidesWith(b)){
+			this->position.y -= this->speed.y*dt;
+				speed.y = 0;
 				if (this->isOver(b)){
 					this->isJumping = 0;
 				}
 			}
-			this->position.y += this->speed.y*dt;
-			this->position.x += this->speed.x*dt;
 
+			this->position.x += this->speed.x*dt;
+			if (this->collidesWith(b)){
+			this->position.x -= this->speed.x*dt;
+				speed.x = 0;
+			}
 		}
-		//printf("\n");
+		printf("\n");
 
 	}
 
@@ -119,29 +120,3 @@ int Block::isUnder(Block b){
 	return (this->getCenterY()<b.getCenterY());
 }
 
-int Block::collidesNextTo(Block b){
-
-	// BUGGY BUG Y BUG
-
-	double a, x1, x2, y1, y2;
-	a = this->speed.y/this->speed.x;
-	if (this->isLeftTo(b)){
-		x1 = this->getPosX()+this->getWidth();
-		x2 = b.getPosX();
-	} else {
-		x1 = b.getPosX()+b.getWidth();
-		x2 = this->getPosX();
-	}
-
-	if (this->isUnder(b)){
-		y1 = this->getPosY()+this->getHeight();
-		y2 = b.getPosY();
-	} else {
-		x1 *= -1;
-		x2 *= -1;
-		y1 = b.getPosY()+b.getHeight();
-		y2 = this->getPosY();
-	}
-
-	return (a*(x2-x1) >= y2-y1);
-}

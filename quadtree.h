@@ -37,6 +37,7 @@ class Quadtree {
 	void depth();
 
 	std::vector<Block> findChild(Quadtree *tree, double x, double y);
+	void render(Quadtree *tree);
 
 	std::vector<Block> myblocks;
 };
