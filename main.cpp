@@ -34,10 +34,13 @@ int main(){
 
 	Block* charaTab = (Block*)malloc(sizeof(Block)*chara.numberChara);
 
-	//Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
-	Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	//
 
-	//Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	//Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376); 
+	//Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl1
+
+	//Block perso1(2, win.baseH, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl4
+	Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
@@ -46,12 +49,14 @@ int main(){
 	Block b2(win.baseW-50, win.baseH/5, 5, 5, 0.1, 0.5, 0.3);*/
 
 
-	std::vector<Block>myblocks = creaWithFile("levels/level1");
-	//std::vector<Block>myblocks = creaWithFile("levels/level3");
+	//std::vector<Block>myblocks = creaWithFile("levels/level1");
+	std::vector<Block>myblocks = creaWithFile("levels/level3");
 	std::vector<Block> env;
-	//Quadtree quad(-40,0,94, 70);
-	//Quadtree quad(-40,0,285, 140);
-	//Quadtree quad(0,0,148, 80);
+
+	//Quadtree quad(-40,0,92, 36); //lvl4
+	Quadtree quad(-40,0,94, 40); //lvl3
+	//Quadtree quad(-40,0,285, 140);  //lvl2
+	//Quadtree quad(0,0,148, 80); //lvl1
 	//Quadtree quad(0,0,40,40);
 
 	std::vector<Block> tab;
