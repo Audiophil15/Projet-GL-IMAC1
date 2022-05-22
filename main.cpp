@@ -112,8 +112,21 @@ int main(){
 	// GLuint menu;
 
 	// menu = initializeTexture(img);
-	printf("le result is %d", menu(win));
+	// printf("le result is %d", menu(win));
 	int choix = menu(win);
+
+	// int level = choiceLevel(win);
+	// int pause = menuPause(win);
+	// int rulestest = menuRules(win);
+	// int settings = menuSettings(win);
+	// int victory = menuVictory(win);
+	// int gameover= menuGameOver(win);
+	int final = menuFinal(win);
+
+
+
+
+
 
 	switch (choix)
 	{
@@ -231,7 +244,6 @@ int main(){
 		glLoadIdentity();
 
 
-		// textureMenu(menu, win);
 
 
 		// camera
@@ -269,7 +281,6 @@ int main(){
 	SDL_DestroyWindow(win.SDLWindow);
 	SDL_Quit();
 
-	// deleteTexture(&menu, img);
 
 }
 
