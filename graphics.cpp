@@ -1,9 +1,11 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <vector>
 
 #include "graphics.h"
 #include "window.h"
+#include "menu.h"
 
 void initSDL(){
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -91,4 +93,129 @@ void onWindowResized(Window w){
 	gluOrtho2D(
 	0, w.baseW,
 	0, w.baseH);
+}
+
+
+GLuint initializeTexure(SDL_Surface* img){
+	GLuint texture;
+
+
+	glGenTextures(1,&texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+
+	return texture;
+}
+
+
+void textureBackground(GLuint texture, Window win){
+	//texture
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);			
+
+			glTexCoord2f(0,1);
+            glVertex2f(0,0);
+
+			glTexCoord2f(1,1);
+            glVertex2f(win.baseW, 0);
+
+			glTexCoord2f(1,0);
+            glVertex2f(win.baseW, win.baseH);
+
+			glTexCoord2f(0,0);
+            glVertex2f(0, win.baseH);
+
+        glEnd();
+
+		
+
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+}
+
+
+void textureMenu(Choice texture){
+	//texture
+        glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBindTexture(GL_TEXTURE_2D, texture.textureBack);
+
+		double left = texture.rectangle.getPosX();
+		double right = texture.rectangle.getPosX() + texture.rectangle.getWidth();
+		double bottom = texture.rectangle.getPosY();
+		double top = texture.rectangle.getPosY()+texture.rectangle.getHeight();
+		
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);			
+
+			glTexCoord2f(0,1);
+            glVertex2f(left,bottom);
+
+			glTexCoord2f(1,1);
+            glVertex2f(right, bottom);
+
+			glTexCoord2f(1,0);
+            glVertex2f(right, top);
+
+			glTexCoord2f(0,0);
+            glVertex2f(left, top);
+
+        glEnd();
+
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+}
+
+void textureMenuTop(Choice texture){
+	//texture
+        glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBindTexture(GL_TEXTURE_2D, texture.textureFront);
+
+		double left = texture.rectangle.getPosX();
+		double right = texture.rectangle.getPosX() + texture.rectangle.getWidth();
+		double bottom = texture.rectangle.getPosY();
+		double top = texture.rectangle.getPosY()+texture.rectangle.getHeight();
+		
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);			
+
+			glTexCoord2f(0,1);
+            glVertex2f(left,bottom);
+
+			glTexCoord2f(1,1);
+            glVertex2f(right, bottom);
+
+			glTexCoord2f(1,0);
+            glVertex2f(right, top);
+
+			glTexCoord2f(0,0);
+            glVertex2f(left, top);
+
+        glEnd();
+
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+}
+
+
+
+void deleteTexture(GLuint *texture, SDL_Surface* img){
+	SDL_FreeSurface(img);
+    glDeleteTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

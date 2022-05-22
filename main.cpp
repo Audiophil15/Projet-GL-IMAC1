@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <cmath>
@@ -11,6 +13,7 @@
 #include "window.h"
 #include "graphics.h"
 #include "chara.h"
+#include "menu.h"
 
 void axis(int baseW, int baseH);
 
@@ -57,6 +60,46 @@ int main(){
 
 	double dt = 1.0/60;
 	int accelFactor = 50;
+
+
+	// //texture menu fond
+	// SDL_Surface* img= IMG_Load("./src/menu.png");
+	
+
+	// if(img==NULL){
+	// 	exit(-1);
+	// }
+
+	// GLuint menu;
+
+	// menu = initializeTexture(img);
+	printf("le result is %d", menu(win));
+	int choix = menu(win);
+
+	switch (choix)
+	{
+	case 0:
+		printf("lalala play");
+		break;
+	
+	case 1:
+		printf("lalala rules");
+		break;
+
+	case 2:
+		printf("lalala options");
+		break;
+
+	case 3:
+		printf("lalala quit");
+		break;
+	
+	default:
+		break;
+	}
+
+	// menu(win);
+
 
 	while(!quit){
 
@@ -137,8 +180,11 @@ int main(){
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		// camera
 
+		// textureMenu(menu, win);
+
+
+		// camera
 		glColor3f(1,0,0);
 		axis(win.baseW, win.baseH);
 
@@ -164,6 +210,8 @@ int main(){
 	SDL_GL_DeleteContext(win.GLContext);
 	SDL_DestroyWindow(win.SDLWindow);
 	SDL_Quit();
+	
+	// deleteTexture(&menu, img);
 
 }
 
