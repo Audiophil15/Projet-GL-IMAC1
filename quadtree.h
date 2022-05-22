@@ -1,5 +1,5 @@
 #ifndef QUADTREE_H
-#define QUADTREE_
+#define QUADTREE_H
 
 #include "block.h"
 #include <vector>

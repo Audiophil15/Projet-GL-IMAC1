@@ -40,7 +40,8 @@ int main(){
 	//Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl1
 
 	//Block perso1(2, win.baseH, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl4
-	Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
+	//Block perso1(2, 22, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
+	//Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
 	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
@@ -50,11 +51,14 @@ int main(){
 
 
 	//std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>myblocks = creaWithFile("levels/level3");
+	std::vector<Block>myblocks = creaWithFile("levels/level4");
+	std::vector<Block>charas = creaCharaWithFile("levels/level4");
 	std::vector<Block> env;
+	Quadtree quad = leveltree("levels/level4");
 
+	//Quadtree quad(-80,0,184, 72);
 	//Quadtree quad(-40,0,92, 36); //lvl4
-	Quadtree quad(-40,0,94, 40); //lvl3
+	//Quadtree quad(-40,0,94, 40); //lvl3
 	//Quadtree quad(-40,0,285, 140);  //lvl2
 	//Quadtree quad(0,0,148, 80); //lvl1
 	//Quadtree quad(0,0,40,40);
@@ -84,7 +88,8 @@ int main(){
 	}
 	
 
-	charaTab[0] = perso1;
+	//charaTab[0] = perso1;
+	charaTab[0] = charas[0];
 	charaTab[1] = perso2;
 	charaTab[2] = perso3;
 
