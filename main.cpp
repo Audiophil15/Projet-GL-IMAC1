@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <cmath>
+#include <math.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <vector>
@@ -36,29 +36,31 @@ int main(){
 
 	int numberChara = 3;
 
-	Block* charaTab = (Block*)malloc(sizeof(Block)*chara.numberChara);
+	Block** charaTab = (Block**)malloc(sizeof(Block*)*chara.numberChara);
 
 	//
 
 	//Block perso1((int)win.scrW/2, (int)win.scrH/2, 1, 5, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
 	//Block perso1(2, win.baseH, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl1
 
-	//Block perso1(2, win.baseH, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl4
-	Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
-	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
-	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
+	Block perso1(2, win.baseH, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl4
+	Block perso2(2-5, win.baseH, 1, 1, 0.025, 0., -58.8, 0.376, 0.921, 0.376); //lvl4
+	Block perso3(2-7.5, win.baseH, 1, 1, 0.025, 0., -58.8, 0.376, 0.376, 0.921); //lvl4
+	//Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
+	// Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
+	// Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
 	//Block plateforme(0, 0, win.baseW, win.baseH/5);
 	/*Block b1(0, win.baseH/5, 5, 5, 0.2, 0.5, 0.1);
 	Block b2(win.baseW-50, win.baseH/5, 5, 5, 0.1, 0.5, 0.3);*/
 
 
-	//std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>myblocks = creaWithFile("levels/level3");
+	//std::vector<Block>myblocks = mapFromFile("levels/level1");
+	std::vector<Block>myblocks = mapFromFile("levels/level4");
 	std::vector<Block> env;
 
-	//Quadtree quad(-40,0,92, 36); //lvl4
-	Quadtree quad(-40,0,94, 40); //lvl3
+	Quadtree quad(-40,0,92, 36); //lvl4
+	//Quadtree quad(-40,0,94, 40); //lvl3
 	//Quadtree quad(-40,0,285, 140);  //lvl2
 	//Quadtree quad(0,0,148, 80); //lvl1
 	//Quadtree quad(0,0,40,40);
@@ -88,11 +90,11 @@ int main(){
 	}
 
 
-	charaTab[0] = perso1;
-	charaTab[1] = perso2;
-	charaTab[2] = perso3;
+	charaTab[0] = &perso1;
+	charaTab[1] = &perso2;
+	charaTab[2] = &perso3;
 
-	Block selectedBlock = charaTab[chara.selectedChara];
+	Block* selectedBlock = charaTab[chara.selectedChara];
 
 	double camx = 0;
 	double camy = 0;
@@ -144,7 +146,7 @@ int main(){
 
 		//myblocks=quad.myblocks;
 		//quad.depth();
-		myblocks = quad.findChild(&quad, selectedBlock.getPosX(), selectedBlock.getPosY());
+		myblocks = quad.findChild(&quad, selectedBlock->getPosX(), selectedBlock->getPosY());
 
 		//myblocks = quad.findChild(&quad, 5, 26);
 		/*for (Block b : myblocks){
@@ -189,7 +191,7 @@ int main(){
 
 
 					case SDLK_UP:
-						selectedBlock.jump();
+						selectedBlock->jump();
 					break;
 
 				}
@@ -202,12 +204,12 @@ int main(){
 
 
 
-		selectedBlock.isMovingLeft = (int)keystate[SDL_SCANCODE_LEFT];
-		selectedBlock.isMovingRight = (int)keystate[SDL_SCANCODE_RIGHT];
+		selectedBlock->isMovingLeft = (int)keystate[SDL_SCANCODE_LEFT];
+		selectedBlock->isMovingRight = (int)keystate[SDL_SCANCODE_RIGHT];
 
 		// Updates physics variables
 
-		selectedBlock.updatePosition(myblocks, dt);
+		selectedBlock->updatePosition(myblocks, dt);
 
 
 		// charaTab[chara.previousChara].updatePosition(env, dt);
@@ -219,8 +221,8 @@ int main(){
 		// 	charaTab[chara.previousChara].speed.y = 0;
 		// }
 
-		camx = selectedBlock.getPosX();
-		camy = selectedBlock.getPosY();
+		camx = selectedBlock->getPosX();
+		camy = selectedBlock->getPosY();
 		camx = std::max(0., camx-win.baseW/2);
 		// camx = min(camx, map.getWidth());
 		camy = std::max(0., camy-win.baseH/5);
@@ -249,11 +251,14 @@ int main(){
 				myblocks.at(i).draw();
 			}*/
 
-			selectedBlock.draw();
+			selectedBlock->draw();
+			for (int i=0; i<chara.numberChara; i++){
+				charaTab[i]->draw();
+			}
 			for (Block b : env){
 				b.draw();
 			}
-			quad.render(&quad);
+			quad.depth(1);
 			// for(int i=0; i< numberChara; i++){
 			// 	charaTab[i].draw();
 			// }

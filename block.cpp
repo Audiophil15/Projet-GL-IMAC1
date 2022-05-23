@@ -20,8 +20,6 @@ Block::Block(double x, double y, double w, double h, double r, double g, double 
 
 Block::Block(double x, double y, double w, double h, float adh, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(adh){}
 
-Block::Block(double x, double y, double w, double h, float adh, int accX, int accY):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({accX,accY}), adherence(adh){}
-
 Block::Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({accX, accY}), adherence(adh){}
 
 

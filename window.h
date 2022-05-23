@@ -5,14 +5,16 @@
 
 class Window {
 	public :
-		const float baseH = 40;
-		const float baseW = 80;
-		const float ratio = 2.0;
+		const float baseH;
+		const float baseW;
+		const float ratio;
 		float scrH, scrW;
 		SDL_Window* SDLWindow;
 		SDL_GLContext GLContext;
 
 		Window();
+		Window(int width, int height);
+		Window(int glwidth, int glheight, int width, int height);
 };
 
 #endif

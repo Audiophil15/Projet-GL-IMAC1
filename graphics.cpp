@@ -116,7 +116,7 @@ void textureBackground(GLuint texture, Window win){
 
 
 		glBegin(GL_QUADS);
-			glColor3f(1,1,1);			
+			glColor3f(1,1,1);
 
 			glTexCoord2f(0,1);
             glVertex2f(0,0);
@@ -131,9 +131,6 @@ void textureBackground(GLuint texture, Window win){
             glVertex2f(0, win.baseH);
 
         glEnd();
-
-		
-
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);
@@ -151,11 +148,11 @@ void textureMenu(Choice texture){
 		double right = texture.rectangle.getPosX() + texture.rectangle.getWidth();
 		double bottom = texture.rectangle.getPosY();
 		double top = texture.rectangle.getPosY()+texture.rectangle.getHeight();
-		
+
 
 
 		glBegin(GL_QUADS);
-			glColor3f(1,1,1);			
+			glColor3f(1,1,1);
 
 			glTexCoord2f(0,1);
             glVertex2f(left,bottom);
@@ -187,11 +184,11 @@ void textureMenuTop(Choice texture){
 		double right = texture.rectangle.getPosX() + texture.rectangle.getWidth();
 		double bottom = texture.rectangle.getPosY();
 		double top = texture.rectangle.getPosY()+texture.rectangle.getHeight();
-		
+
 
 
 		glBegin(GL_QUADS);
-			glColor3f(1,1,1);			
+			glColor3f(1,1,1);
 
 			glTexCoord2f(0,1);
             glVertex2f(left,bottom);

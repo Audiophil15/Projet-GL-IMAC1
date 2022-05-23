@@ -23,7 +23,6 @@ class Block : public Rectangle {
 		Block(double x, double y, double w, double h, float adh);
 		Block(double x, double y, double w, double h, double r, double g, double b);
 		Block(double x, double y, double w, double h, float adh, double r, double g, double b);
-		Block(double x, double y, double w, double h, float adh, int accX, int accY);
 		Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b);
 
 		void moveto(int x, int y);

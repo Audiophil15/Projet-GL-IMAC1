@@ -9,7 +9,7 @@
 #include "string"
 
 
-std::vector<Block> creaWithFile(std::string namefile){
+std::vector<Block> mapFromFile(std::string namefile){
 	std::vector<Block> myblocks;
 
 	int r;
@@ -29,7 +29,7 @@ std::vector<Block> creaWithFile(std::string namefile){
 		myblocks.push_back(blocks);
 		}
 	}
-	while (v == 4); 
+	while (v == 4);
 
 	return myblocks;
 
