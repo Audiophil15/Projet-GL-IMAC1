@@ -2,6 +2,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <vector>
+#include <string>
 
 #include "graphics.h"
 #include "window.h"
@@ -96,7 +97,14 @@ void onWindowResized(Window w){
 }
 
 
-GLuint initializeTexure(SDL_Surface* img){
+GLuint initializeTexure(std::string chemin){
+
+	SDL_Surface* img= IMG_Load(chemin.c_str());
+	if(img==NULL){
+		exit(-1);
+	}
+
+
 	GLuint texture;
 
 
@@ -104,6 +112,9 @@ GLuint initializeTexure(SDL_Surface* img){
     glBindTexture(GL_TEXTURE_2D,texture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+
+	SDL_FreeSurface(img);
+
 
 	return texture;
 }
@@ -211,8 +222,7 @@ void textureMenuTop(Choice texture){
 
 
 
-void deleteTexture(GLuint *texture, SDL_Surface* img){
-	SDL_FreeSurface(img);
+void deleteTexture(GLuint *texture){
     glDeleteTextures(1, texture);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
