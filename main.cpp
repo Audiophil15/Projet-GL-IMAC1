@@ -55,9 +55,11 @@ int main(){
 	Block b2(win.baseW-50, win.baseH/5, 5, 5, 0.1, 0.5, 0.3);*/
 
 
-	//std::vector<Block>myblocks = mapFromFile("levels/level1");
-	std::vector<Block>myblocks = mapFromFile("levels/level4");
+	//std::vector<Block>myblocks = creaWithFile("levels/level1");
+	std::vector<Block>myblocks = creaWithFile("levels/level4");
+	std::vector<Block>charas = creaCharaWithFile("levels/level4");
 	std::vector<Block> env;
+	Quadtree quad = leveltree("levels/level4");
 
 	Quadtree quad(-40,0,92, 36); //lvl4
 	//Quadtree quad(-40,0,94, 40); //lvl3
