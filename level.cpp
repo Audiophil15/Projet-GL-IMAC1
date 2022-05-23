@@ -20,7 +20,7 @@ std::vector<Block> creaWithFile(std::string namefile){
 	double g=1;
 	double b=1;
 	int v, d1, d2, d3, d4;
-	int zoom = 1;
+	double zoom = 1;
 	char *parameter = (char *) malloc( 10 * sizeof(char));
 
 	char *file_contents = (char *) malloc( 50 * sizeof(char));
@@ -41,7 +41,7 @@ std::vector<Block> creaWithFile(std::string namefile){
 			break;
 			
 			case 'z' :
-				sscanf(file_contents, "%*s %d", &zoom);
+				sscanf(file_contents, "%*s %lf", &zoom);
 			break;
 
 			default:
@@ -97,7 +97,8 @@ std::vector<Block> creaCharaWithFile(std::string namefile){
 			case 'r' : { 
 
 				sscanf(file_contents, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
-				Block chara(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
+				//Block chara(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
+				Block chara(x, y, sizeX, sizeY, 0.025, 0., -58.8, r,g,b);
 				charas.push_back(chara);
 			}
 			break;

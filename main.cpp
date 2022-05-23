@@ -41,8 +41,8 @@ int main(){
 
 	//Block perso1(2, win.baseH, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl4
 	//Block perso1(2, 22, 1, 1, 0.025, 0., -58.8, 0.921, 0.376, 0.376);
-	//Block perso1(2, 22, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
-	Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
+	//Block perso1(10, 33, 1, 2, 0.025, 0., -58.8, 0.921, 0.376, 0.376); //lvl 3
+	//Block perso2((int)win.scrW/2 - 100, (int)win.scrH/2, 15, 15, 1, 0., -9.8, 0.937, 0.933, 0.560);
 	Block perso3((int)win.scrW/2 + 100, (int)win.scrH/2, 30, 30, 1, 0., -9.8, 0.937, 0.560, 0.870);
 
 	//Block plateforme(0, 0, win.baseW, win.baseH/5);
@@ -51,10 +51,10 @@ int main(){
 
 
 	//std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>myblocks = creaWithFile("levels/level4");
-	std::vector<Block>charas = creaCharaWithFile("levels/level4");
+	std::vector<Block>myblocks = creaWithFile("levels/level1");
+	std::vector<Block>charas = creaCharaWithFile("levels/level1");
 	std::vector<Block> env;
-	Quadtree quad = leveltree("levels/level4");
+	//Quadtree quad = leveltree("levels/level4");
 
 	//Quadtree quad(-80,0,184, 72);
 	//Quadtree quad(-40,0,92, 36); //lvl4
@@ -63,18 +63,7 @@ int main(){
 	//Quadtree quad(0,0,148, 80); //lvl1
 	//Quadtree quad(0,0,40,40);
 
-	std::vector<Block> tab;
-	tab.push_back(Block(0, 15));
-	// tab.push_back(Block(10, 8));
-    /*tab.push_back(Block(21, 2));
-    tab.push_back(Block(24, 2));
-    tab.push_back(Block(27, 2));
-    tab.push_back(Block(30, 2));
-    tab.push_back(Block(33, 2));
-    tab.push_back(Block(21, 0, 8, 15));
-    tab.push_back(Block(0, 25, 8, 15));*/
-
-	quad.initialize(myblocks);
+	//quad.initialize(myblocks);
 	//quad.initialize(tab);
 	/**/
 	//quad.depth();
@@ -90,8 +79,10 @@ int main(){
 
 	//charaTab[0] = perso1;
 	charaTab[0] = charas[0];
-	charaTab[1] = perso2;
-	charaTab[2] = perso3;
+	//charaTab[1] = perso2;
+	charaTab[1] = charas[1];
+	//charaTab[2] = perso3;
+	charaTab[2] = charas[2];
 
 	Block selectedBlock = charaTab[chara.selectedChara];
 
@@ -106,7 +97,7 @@ int main(){
 
 		//myblocks=quad.myblocks;
 		//quad.depth();
-		myblocks = quad.findChild(&quad, selectedBlock.getPosX(), selectedBlock.getPosY());
+		//myblocks = quad.findChild(&quad, selectedBlock.getPosX(), selectedBlock.getPosY());
 
 		//myblocks = quad.findChild(&quad, 5, 26);
 		/*for (Block b : myblocks){
@@ -169,7 +160,9 @@ int main(){
 
 		// Updates physics variables
 
-		selectedBlock.updatePosition(myblocks, dt);
+		//selectedBlock.updatePosition(myblocks, dt);
+		selectedBlock.updatePosition(env, dt);
+
 
 
 		// charaTab[chara.previousChara].updatePosition(env, dt);
@@ -183,6 +176,9 @@ int main(){
 
 		camx = selectedBlock.getPosX();
 		camy = selectedBlock.getPosY();
+		camx = std::max(0., camx-win.baseW/2);
+		// camx = min(camx, map.getWidth());
+		camy = std::max(0., camy-win.baseH/5);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
@@ -192,16 +188,17 @@ int main(){
 		// camera
 
 		glColor3f(1,0,0);
-		axis(win.baseW, win.baseH);
+		//axis(win.baseW, win.baseH);
 		
 
 		glPushMatrix();
 
 
 
-			glTranslatef(-camx + win.baseW/2, -camy + win.baseH/5, 0);
+			//glTranslatef(-camx + win.baseW/2, -camy + win.baseH/5, 0);
+			glTranslatef(-camx, -camy, 0);
 			glColor3f(0,1,0);
-			axis(win.baseW, win.baseH);
+			//axis(win.baseW, win.baseH);
 
 			/*for (int i = 0; i < myblocks.size(); i++){
 				myblocks.at(i).draw();
@@ -211,7 +208,7 @@ int main(){
 			for (Block b : env){
 				b.draw();
 			}
-			quad.render(&quad);
+			//quad.render(&quad);
 			// for(int i=0; i< numberChara; i++){
 			// 	charaTab[i].draw();
 			// }
