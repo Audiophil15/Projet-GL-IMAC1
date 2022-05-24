@@ -7,63 +7,28 @@
 
 #include "block.h"
 
-using namespace std;
-
 Quadtree::Quadtree():Quadtree(0,0,0,0){}
 Quadtree::Quadtree(int xmin, int ymin, int xmax, int ymax):xmin(xmin), ymin(ymin), xmax(xmax), ymax(ymax){}
 
-std::vector<Block> Quadtree::findChild(Quadtree *tree, double x, double y){
+std::vector<Block> Quadtree::findChild(double x, double y){
 
-		/*printf("xmax : %d", tree->xmax);
-		printf("ymax : %d", tree->ymax);
-		printf("xmin : %d", tree->xmin);
-		printf("ymin : %d \n", tree->ymin);*/
+	if(!this->isLeaf()){
 
-	if(!tree->isLeaf()){
-
-	if(x< (double) (tree->xmax + tree->xmin)/2){
-
-		if(y< ((double)tree->ymax + (double) tree->ymin)/2){
-
-		return tree->findChild(tree->bl, x,y);
-
+		if(x< (double) (this->xmax + this->xmin)/2){
+			if(y< ((double)this->ymax + (double) this->ymin)/2){
+				return this->bl->findChild(x,y);
+			}else{
+				return this->tl->findChild(x,y);
+			}
 		}else{
-		return tree->findChild(tree->tl, x,y);
-		}
-	}else{
-		if(y< ((double)tree->ymax + (double) tree->ymin)/2){
-		return tree->findChild(tree->br, x,y);
-		}else{
-		return tree->findChild(tree->tr, x,y);
+			if(y< ((double)this->ymax + (double) this->ymin)/2){
+				return this->br->findChild(x,y);
+			}else{
+				return this->bl->findChild(x,y);
+			}
 		}
 	}
-	}
-	//printf("size : %ld", tree->blocks.size());
-	//exit(0);
-	//return blocks;
-	return tree->blocks;
-
-	// 	if(!this->isLeaf()){
-
-	// 	if(x< (this->xmax + this->xmin)*0.5){
-	// 		if(y< (this->ymax + this->ymin)*0.5){
-	// 			return this->bl->findChild(x,y);
-	// 		}else{
-	// 			return this->tl->findChild(x,y);
-	// 		}
-	// 	}else{
-	// 		if(y< (this->ymax + this->ymin)*0.5){
-	// 			return this->br->findChild(x,y);
-	// 		}else{
-	// 			return this->tr->findChild(x,y);
-	// 		}
-	// 	}
-	// }
-	// //printf("size : %ld", tree->blocks.size());
-	// //exit(0);
-	// //return blocks;
-	// return this->blocks;
-
+	return this->blocks;
 }
 
 void Quadtree::insert(Block &b){
@@ -82,7 +47,6 @@ void Quadtree::insert(Block &b){
 	}else{
 		this->insertInChildren(b);
 	}
-	// this->render();
 
 }
 
@@ -133,8 +97,8 @@ void Quadtree::depth(int gldraw){
 	} else {
 		if (gldraw){
 			this->render();
-			// printf("xm : %d\nym : %d\nxM : %d\nyM : %d\n\n", this->xmin, this->ymin, this->xmax, this->ymax);
 		}
+		// printf("xm : %d\nym : %d\nxM : %d\nyM : %d\n\n", this->xmin, this->ymin, this->xmax, this->ymax);
 	}
 }
 

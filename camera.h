@@ -5,6 +5,8 @@
 
 class Camera {
 	glm::vec2 position;
+	// AJOUTER CHAMPS DE BORNES MAX
+	// AJOUTER METHODE LECTURE DEPUIS FICHIER
 
 	public:
 

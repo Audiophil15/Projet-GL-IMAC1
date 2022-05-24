@@ -21,13 +21,13 @@ int main(){
 	GameEnvironment gameEnvironment;
 	gameEnvironment.window.SDLWindow = initWindow(gameEnvironment.window.scrW, gameEnvironment.window.scrH);
 	gameEnvironment.window.GLContext = contextInit(gameEnvironment.window.SDLWindow);
-	windowResize(gameEnvironment.window.scrW, gameEnvironment.window.scrH, gameEnvironment.window);
-	gameEnvironment.startGame();
 
+	windowResize(gameEnvironment.window.scrW, gameEnvironment.window.scrH, gameEnvironment.window);
+
+	gameEnvironment.startGame();
 
 	SDL_GL_DeleteContext(gameEnvironment.window.GLContext);
 	SDL_DestroyWindow(gameEnvironment.window.SDLWindow);
 	SDL_Quit();
-
 
 }

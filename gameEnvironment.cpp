@@ -12,7 +12,7 @@ GameEnvironment::GameEnvironment():quit(0){}
 
 void GameEnvironment::startGame(){
 	while (!this->quit){
-		switch (menu(this->window)){
+		switch (mainMenu(this->window)){
 			case 0 :
 				int level;
 				level = choiceLevel(this->window);
@@ -44,6 +44,7 @@ void GameEnvironment::play(){
 	this->gameloop = 1;
 
 	while (this->gameloop && !this->quit){
+		// this->level.getCurrentPlayer()->printInputs(); //debug
 
 		this->manageEvents();
 

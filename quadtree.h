@@ -38,7 +38,7 @@ class Quadtree {
 		void initialize(std::vector<Block> tabBlocks);
 		void insert(Block &b);
 		void depth(int gldraw);
-		std::vector<Block> findChild(Quadtree *tree, double x, double y);
+		std::vector<Block> findChild(double x, double y);
 		void render();
 
 };

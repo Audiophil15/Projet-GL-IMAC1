@@ -47,6 +47,7 @@ void Block::moverel(glm::vec2 dv){
 
 void Block::jump(){
 	if (!this->isJumping){
+
 		this->speed.y = 25.0;
 		this->isJumping = 1;
 	}
@@ -76,7 +77,7 @@ void Block::updatePosition(std::vector<Block> environment){
 			if (this->collidesWith(b)){
 				this->position.y -= this->speed.y*dt;
 				speed.y = 0;
-				if (this->isOver(b)){
+				if (this->hover(b)){
 					this->isJumping = 0;
 				}
 			}
@@ -112,7 +113,7 @@ int Block::isRightTo(Block b){
 	return (this->getCenterX()>b.getCenterX());
 }
 
-int Block::isOver(Block b){
+int Block::hover(Block b){
 	return (this->getCenterY()>b.getCenterY());
 }
 
@@ -128,7 +129,11 @@ void Block::stop(){
 void Block::moveFromInputs(){
 	this->isMovingLeft = (int)keystate[SDL_SCANCODE_LEFT];
 	this->isMovingRight = (int)keystate[SDL_SCANCODE_RIGHT];
-	if (!this->isJumping && (int)keystate[SDL_SCANCODE_SPACE]){
+	if (!this->isJumping && ((int)keystate[SDL_SCANCODE_SPACE] || (int)keystate[SDL_SCANCODE_UP])){
 		this->jump();
 	}
+}
+
+void Block::printInputs(){
+	printf("L %d : R %d : S %d\n", (int)keystate[SDL_SCANCODE_LEFT], (int)keystate[SDL_SCANCODE_RIGHT], (int)keystate[SDL_SCANCODE_SPACE] || (int)keystate[SDL_SCANCODE_UP]);
 }

@@ -21,7 +21,7 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	// }
 	this->characters = this->charactersFromFile(filename);
 	this->platformsTree = this->quadtreeFromFile(filename);
-	this->platformsTree.initialize(this->map);
+	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
 }
 
@@ -110,7 +110,7 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 		switch(parameter[0]){
 			case 'r' :
 				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
-				character = new Block(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
+				character = new Block(x, y, sizeX, sizeY, 0.025, 0., -58.8, r,g,b);
 				characters.push_back(character);
 			break;
 
@@ -156,10 +156,11 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 	return tree;
 }
 
-void Level::updateCamera(Window window){
+void Level::updateCamera(Window window){ // DEPLACER DANS CAMERA.CPP
 	this->camera.setPosition(this->currentPlayer->getPosition());
 	this->camera.setX(std::max(0.f, this->camera.getX()-window.baseW/2));
 	this->camera.setY(std::max(0.f, this->camera.getY()-window.baseH/5));
+
 }
 
 Block* Level::getCurrentPlayer(){
@@ -167,7 +168,8 @@ Block* Level::getCurrentPlayer(){
 }
 
 void Level::updateLocalEnv(){
-	this->localEnv = this->platformsTree.findChild(&(this->platformsTree), this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
+	// DEBUG
+	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
 }
 
 void Level::display(Window window){
@@ -186,14 +188,14 @@ void Level::display(Window window){
 		// glColor3f(0,1,0);
 		// axis(window.baseW, window.baseH);
 
-		this->currentPlayer->draw();
+		// this->currentPlayer->draw();
 		for (Block* character:this->characters){
 			character->draw();
 		}
 		for (Block b : this->localEnv){
 			b.draw();
 		}
-		this->platformsTree.depth(1);
+		this->platformsTree.depth(1); //debug
 
 	glPopMatrix();
 

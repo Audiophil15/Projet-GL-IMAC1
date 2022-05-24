@@ -36,7 +36,7 @@ class Block : public Rectangle {
 		int isVerticalTo(Block b);
 		int isLeftTo(Block b);
 		int isRightTo(Block b);
-		int isOver(Block b);
+		int hover(Block b);
 		int isUnder(Block b);
 		int collidesNextTo(Block b);
 
@@ -45,6 +45,7 @@ class Block : public Rectangle {
 		void updatePosition(std::vector<Block> environment);
 		void moveFromInputs();
 		void manageEvent(SDL_Event);
+		void printInputs();
 
 };
 
