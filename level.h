@@ -27,16 +27,19 @@ class Level{
 
 		Level();
 		Level(std::string filename);
-
+		double getZoom(std::string filename);
+		
 		void manageEvent(SDL_Event);
-		void display(Window);
+		void display(Window, std::string filename);
 
 		void switchCharacter();
-		void updateCamera(Window);
+		void updateCamera(Window, std::string filename);
 		void updateLocalEnv();
 
 		Block* getCurrentPlayer();
 		void updatePlayer();
+		glm::vec2 getBornes(std::string filename);
+
 
 };
 

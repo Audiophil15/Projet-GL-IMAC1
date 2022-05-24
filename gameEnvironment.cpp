@@ -10,7 +10,9 @@
 
 GameEnvironment::GameEnvironment():quit(0){}
 
+
 void GameEnvironment::startGame(){
+	//
 	while (!this->quit){
 		switch (mainMenu(this->window)){
 			case 0 :
@@ -18,7 +20,8 @@ void GameEnvironment::startGame(){
 				level = choiceLevel(this->window);
 				if (level >= 0){
 					this->loadLevel(level);
-					this->play();
+					this->play(level);
+					
 					if (!this->quit && level == LAST_LEVEL){
 						this->quit = menuFinal(this->window);
 					}
@@ -40,7 +43,7 @@ void GameEnvironment::startGame(){
 	}
 }
 
-void GameEnvironment::play(){
+void GameEnvironment::play(int level){
 	this->gameloop = 1;
 
 	while (this->gameloop && !this->quit){
@@ -51,13 +54,16 @@ void GameEnvironment::play(){
 		this->level.updateLocalEnv();
 		this->level.updatePlayer();
 
-		this->level.display(this->window);
+		char path[50];
+		sprintf(path, "levels/level%d\0", level+5);
+		this->level.display(this->window, path);
 
 	}
 }
 
 void GameEnvironment::manageEvents(){
 	SDL_Event e;
+	double levelZoom;
 
 	while(SDL_PollEvent(&e)){
 		switch (e.type){
@@ -77,12 +83,18 @@ void GameEnvironment::manageEvents(){
 				break;
 
 				case SDLK_ESCAPE :
+					levelZoom = this->window.zoom;
+					this->window.zoom = 1;
+					windowResize(this->window.scrW, this->window.scrH, this->window);
+					printf("menu zoom : %lf", this->window.zoom);
 					int choice;
 					do {
-						choice = menuPause(this->window);
+						choice = mainMenu(this->window);
 
 						switch (choice){
 							case 0 :
+							this->window.zoom = levelZoom;
+							windowResize(this->window.scrW, this->window.scrH, this->window);
 							break;
 
 							case 1 :
@@ -106,11 +118,15 @@ void GameEnvironment::manageEvents(){
 						}
 					} while(choice == 1 || choice == 2);
 				break;
+
+				case SDLK_TAB :
+				this->level.switchCharacter();
+				break;
 			}
 		break;
 
 		default:
-			this->level.manageEvent(e);
+			//this->level.manageEvent(e);
 		break;
 		}
 	}
@@ -118,6 +134,9 @@ void GameEnvironment::manageEvents(){
 
 void GameEnvironment::loadLevel(int level){
 	char path[50];
-	sprintf(path, "levels/level%d\0", level+1);
+	sprintf(path, "levels/level%d\0", level+5);
 	this->level = Level(path);
+	this->window.zoom = this->level.getZoom(path);
+	windowResize(this->window.scrW, this->window.scrH, this->window);
+	printf("zoom : %lf", this->window.zoom);
 }

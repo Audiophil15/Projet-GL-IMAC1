@@ -11,6 +11,7 @@ class Window {
 		float scrH, scrW;
 		SDL_Window* SDLWindow;
 		SDL_GLContext GLContext;
+		float zoom = 1;
 
 		Window();
 		Window(int width, int height);

@@ -19,7 +19,7 @@ class GameEnvironment{
 		void manageEvents();
 		void loadLevel(int level);
 		void startGame();
-		void play();
+		void play(int level);
 		// changeToMenu
 
 };

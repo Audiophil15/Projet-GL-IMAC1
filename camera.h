@@ -16,6 +16,9 @@ class Camera {
 		void setPosition(glm::vec2);
 		float getX();
 		float getY();
+		//float borneX = 100.;
+		//float borneY = 50.;
+		//glm::vec2 bornes;
 };
 
 #endif

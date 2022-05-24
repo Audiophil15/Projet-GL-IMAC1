@@ -21,6 +21,7 @@ int main(){
 	GameEnvironment gameEnvironment;
 	gameEnvironment.window.SDLWindow = initWindow(gameEnvironment.window.scrW, gameEnvironment.window.scrH);
 	gameEnvironment.window.GLContext = contextInit(gameEnvironment.window.SDLWindow);
+	//windowResize(win.scrW, win.scrH, win);
 
 	windowResize(gameEnvironment.window.scrW, gameEnvironment.window.scrH, gameEnvironment.window);
 

@@ -92,8 +92,8 @@ void onWindowResized(Window w){
 		glLoadIdentity();
 	}
 	gluOrtho2D(
-	0, w.baseW,
-	0, w.baseH);
+	0, w.baseW*w.zoom,
+	0, w.baseH*w.zoom);
 }
 
 
