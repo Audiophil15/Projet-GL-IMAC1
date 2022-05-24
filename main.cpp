@@ -18,7 +18,7 @@ void axis(int baseW, int baseH);
 int main(){
 
 	Window win;
-	win.zoom = getZoom("levels/level7");
+	win.zoom = getZoom("levels/level4");
 	Chara chara(3);
 	initSDL();
 	win.SDLWindow = initWindow(win.scrW, win.scrH);
@@ -51,8 +51,8 @@ int main(){
 
 
 	//std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>myblocks = creaWithFile("levels/level7");
-	std::vector<Block>charas = creaCharaWithFile("levels/level7");
+	std::vector<Block>myblocks = creaWithFile("levels/level4");
+	std::vector<Block>charas = creaCharaWithFile("levels/level4");
 	std::vector<Block> env;
 	//Quadtree quad = leveltree("levels/level4");
 

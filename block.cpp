@@ -52,6 +52,9 @@ void Block::jump(){
 	}
 }
 
+
+
+
 void Block::updatePosition(std::vector<Block> environment, double dt){
 	Block b;
 
