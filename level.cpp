@@ -3,45 +3,59 @@
 #include <GL/glu.h>
 #include <stdio.h>
 #include <vector>
+#include <string>
 
 #include "level.h"
+
 #include "block.h"
-#include "chara.h"
-//#include "quadtree.h"
-#include "string"
+#include "camera.h"
+#include "quadtree.h"
 
+Level::Level(){}
 
-std::vector<Block> mapFromFile(std::string namefile){
-	std::vector<Block> myblocks;
+Level::Level(std::string filename):currentPlayerIndex(0){
+	this->map = this->mapFromFile(filename);
+	// printf("after creation (%d) :\n", this->map.size()); // debug
+	// for (Block b:this->map){
+	// 	b.props();
+	// }
+	this->characters = this->charactersFromFile(filename);
+	this->platformsTree = this->quadtreeFromFile(filename);
+	this->platformsTree.initialize(this->map);
+	this->currentPlayer = this->characters[this->currentPlayerIndex];
+}
 
-	FILE* file = fopen(namefile.c_str() , "r");
+std::vector<Block> Level::mapFromFile(std::string filename){
+	std::vector<Block> blocks;
+
+	FILE* file = fopen(filename.c_str() , "r");
 	char p;
 	double r=1;
 	double g=1;
 	double b=1;
 	int v, d1, d2, d3, d4;
 	int zoom = 1;
-	char *parameter = (char *) malloc( 10 * sizeof(char));
+	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
 
-	char *file_contents = (char *) malloc( 50 * sizeof(char));
+	char line[50];// = (char *) malloc( 50 * sizeof(char));
+	char copy[50];// = (char *) malloc(strlen(line) + 1);
 
-	char *test = (char *) malloc( 10 * sizeof(char));
+	char test[10];// = (char *) malloc( 10 * sizeof(char));
 
 	do{
-		fscanf(file, "%[^\n] ", file_contents);
-		char * copy = (char *) malloc(strlen(file_contents) + 1); 
-		strcpy(copy, file_contents);
-		parameter = strtok(copy, " ");
-		printf("%s", file_contents);
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("parameter :: %c\n", parameter[0]); //debug
 
 
 		switch(parameter[0]){
 			case 'c' :
-				sscanf(file_contents, "%*s %lf %lf %lf", &r, &g, &b);
+				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
-			
+
 			case 'z' :
-				sscanf(file_contents, "%*s %d", &zoom);
+				sscanf(line, "%*s %d", &zoom);
 			break;
 
 			default:
@@ -52,28 +66,27 @@ std::vector<Block> mapFromFile(std::string namefile){
 
 
 	do {
-	v = 0;
-	v += fscanf(file, "%d", &d1);
-	v += fscanf(file, "%d", &d2);
-	v += fscanf(file, "%d", &d3);
-	v += fscanf(file, "%d", &d4);
-	if (v == 4){
-		Block blocks(d1*zoom, d2*zoom, d3*zoom, d4*zoom,r,g,b);
-		//myblocks[i++] = rect;
-		myblocks.push_back(blocks);
-		}
-	}
-	while (v == 4);
+		v = 0;
+		v += fscanf(file, "%d", &d1);
+		v += fscanf(file, "%d", &d2);
+		v += fscanf(file, "%d", &d3);
+		v += fscanf(file, "%d", &d4);
 
-	return myblocks;
+
+		if (v == 4){
+			Block block(d1*zoom, d2*zoom, d3*zoom, d4*zoom,r,g,b);
+			blocks.push_back(block);
+			}
+	} while (v == 4);
+
+	return blocks;
 
 }
 
+std::vector<Block*> Level::charactersFromFile(std::string filename){
+	std::vector<Block*> characters;
 
-std::vector<Block> creaCharaWithFile(std::string namefile){
-	std::vector<Block> charas;
-
-	FILE* file = fopen(namefile.c_str() , "r");
+	FILE* file = fopen(filename.c_str() , "r");
 	char p;
 	double r=1;
 	double g=1;
@@ -82,24 +95,23 @@ std::vector<Block> creaCharaWithFile(std::string namefile){
 	double y=0;
 	double sizeX = 1;
 	double sizeY = 1;
-	char *parameter = (char *) malloc( 10 * sizeof(char));
-	char *file_contents = (char *) malloc( 50 * sizeof(char));
+	Block* character;
+	char parameter[10];
+	char line[50];
+	char copy[50];
 
 
 	do{
-		fscanf(file, "%[^\n] ", file_contents);
-		char * copy = (char *) malloc(strlen(file_contents) + 1); 
-		strcpy(copy, file_contents);
-		parameter = strtok(copy, " ");
-		printf("%s", file_contents);
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("%s\n", line);
 
 		switch(parameter[0]){
-			case 'r' : { 
-
-				sscanf(file_contents, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
-				Block chara(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
-				charas.push_back(chara);
-			}
+			case 'r' :
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
+				character = new Block(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
+				characters.push_back(character);
 			break;
 
 			default:
@@ -109,31 +121,29 @@ std::vector<Block> creaCharaWithFile(std::string namefile){
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
 
-	return charas;
+	return characters;
 
 }
 
-Quadtree leveltree(std::string namefile){
+Quadtree Level::quadtreeFromFile(std::string filename){
 	int xmin=0;
 	int ymin=0;
 	int xmax=0;
 	int ymax=0;
-	FILE* file = fopen(namefile.c_str() , "r");
-	char *parameter = (char *) malloc( 10 * sizeof(char));
-	char *file_contents = (char *) malloc( 50 * sizeof(char));
+	FILE* file = fopen(filename.c_str() , "r");
+	char parameter[10];
+	char line[50];
+	char copy[50];
 
 	do{
-	fscanf(file, "%[^\n] ", file_contents);
-	char * copy = (char *) malloc(strlen(file_contents) + 1); 
-	strcpy(copy, file_contents);
-	parameter = strtok(copy, " ");
-	printf("%s", file_contents);
+	fscanf(file, "%[^\n] ", line);
+	strcpy(copy, line);
+	strcpy(parameter, strtok(copy, " "));
+	// printf("%s\n", line);
 
 	switch(parameter[0]){
-			case 'q' : { 
-
-				sscanf(file_contents, "%*s %d %d %d %d", &xmin, &ymin, &xmax, &ymax);
-			}
+			case 'q' :
+				sscanf(line, "%*s %d %d %d %d", &xmin, &ymin, &xmax, &ymax);
 			break;
 
 			default:
@@ -142,7 +152,76 @@ Quadtree leveltree(std::string namefile){
 
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
-	//Quadtree tree(xmin*zoom, ymin*zoom, xmax*zoom, ymax*zoom);
 	Quadtree tree(xmin, ymin, xmax, ymax);
 	return tree;
+}
+
+void Level::updateCamera(Window window){
+	this->camera.setPosition(this->currentPlayer->getPosition());
+	this->camera.setX(std::max(0.f, this->camera.getX()-window.baseW/2));
+	this->camera.setY(std::max(0.f, this->camera.getY()-window.baseH/5));
+}
+
+Block* Level::getCurrentPlayer(){
+	return this->currentPlayer;
+}
+
+void Level::updateLocalEnv(){
+	this->localEnv = this->platformsTree.findChild(&(this->platformsTree), this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
+}
+
+void Level::display(Window window){
+
+	this->updateCamera(window);
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	// glColor3f(1,0,0);
+	// axis(window.baseW, window.baseH);
+
+	glPushMatrix();
+		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
+		// glColor3f(0,1,0);
+		// axis(window.baseW, window.baseH);
+
+		this->currentPlayer->draw();
+		for (Block* character:this->characters){
+			character->draw();
+		}
+		for (Block b : this->localEnv){
+			b.draw();
+		}
+		this->platformsTree.depth(1);
+
+	glPopMatrix();
+
+	SDL_GL_SwapWindow(window.SDLWindow);
+
+}
+
+void Level::updatePlayer(){
+	this->getCurrentPlayer()->moveFromInputs();
+	this->getCurrentPlayer()->updatePosition(this->localEnv);
+}
+
+void Level::switchCharacter(){
+	this->currentPlayerIndex = (this->currentPlayerIndex+1)%this->characters.size();
+	this->currentPlayer = this->characters[this->currentPlayerIndex];
+	for (Block* b:this->characters){
+
+	}
+}
+
+void Level::manageEvent(SDL_Event e){
+	switch (e.type){
+		case SDLK_TAB :
+			this->switchCharacter();
+		break;
+
+		default :
+		break;
+
+	}
 }

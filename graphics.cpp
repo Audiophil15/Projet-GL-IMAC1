@@ -220,9 +220,22 @@ void textureMenuTop(Choice texture){
         glDisable(GL_TEXTURE_2D);
 }
 
-
-
 void deleteTexture(GLuint *texture){
     glDeleteTextures(1, texture);
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void axis(int baseW, int baseH){
+	glPushMatrix();
+	glBegin(GL_LINES);
+		glVertex2f(baseW/2 - 30, baseH/2);
+		glVertex2f(baseW/2 + 30, baseH/2);
+	glEnd();
+
+	glBegin(GL_LINES);
+		glVertex2f(baseW/2, baseH/2 - 30);
+		glVertex2f(baseW/2, baseH/2 + 30);
+
+	glEnd();
+	glPopMatrix();
 }

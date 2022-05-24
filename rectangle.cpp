@@ -1,8 +1,10 @@
+#include <GL/gl.h>
+#include <stdio.h>
+
 #include "rectangle.h"
+
 #include "color.h"
 
-#include <stdio.h>
-#include <GL/gl.h>
 
 Rectangle::Rectangle():position({0,0}), size({25,25}), color(ColorRGB(1,1,1)){}
 Rectangle::Rectangle(double pos, double size):position({pos,pos}), size({size,size}), color(ColorRGB(1,1,1)){}
@@ -23,6 +25,10 @@ void Rectangle::draw(){
 void Rectangle::props(){
 	printf("%g : %g : %g : %g\n",this->position.x, this->position.y, this->size.x, this->size.y);
 	printf("%g : %g : %g\n", this->color.r, this->color.g, this->color.b);
+}
+
+glm::vec2 Rectangle::getPosition(){
+	return this->position;
 }
 
 double Rectangle::getPosX(){

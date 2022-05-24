@@ -11,7 +11,7 @@ The Rectangle only defines position, size and color. Movements and other actions
 
 class Rectangle{
 		// int x, y, w, h;
-	public:
+	protected:
 		glm::vec2 position;
 		glm::vec2 size;
 		ColorRGB color;
@@ -23,12 +23,13 @@ class Rectangle{
 		Rectangle(double pos, double size);
 		Rectangle(double x, double y, double w, double h);
 		Rectangle(double x, double y, double w, double h, double r, double g, double b);
-		
-		
+
+
 
 		void draw();
 		double getPosX();
 		double getPosY();
+		glm::vec2 getPosition();
 		double getWidth();
 		double getHeight();
 		double getCenterX();

@@ -1,7 +1,9 @@
-#include <vector>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 #include <math.h>
+
 #include "block.h"
 
 Block::Block():Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(1){}
@@ -50,7 +52,9 @@ void Block::jump(){
 	}
 }
 
-void Block::updatePosition(std::vector<Block> environment, double dt){
+void Block::updatePosition(std::vector<Block> environment){
+
+	double dt = 1.0/60;
 
 	this->acc.x = 100*(this->isMovingRight-this->isMovingLeft - this->speed.x*this->adherence*(2-(this->isMovingLeft || this->isMovingRight)));
 
@@ -116,3 +120,15 @@ int Block::isUnder(Block b){
 	return (this->getCenterY()<b.getCenterY());
 }
 
+void Block::stop(){
+	this->isMovingLeft = 0;
+	this->isMovingRight = 0;
+}
+
+void Block::moveFromInputs(){
+	this->isMovingLeft = (int)keystate[SDL_SCANCODE_LEFT];
+	this->isMovingRight = (int)keystate[SDL_SCANCODE_RIGHT];
+	if (!this->isJumping && (int)keystate[SDL_SCANCODE_SPACE]){
+		this->jump();
+	}
+}

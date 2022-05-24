@@ -1,10 +1,11 @@
-#include "block.h"
-#include <vector>
-#include <queue>
-#include "quadtree.h"
+#include <GL/gl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/gl.h>
+#include <vector>
+
+#include "quadtree.h"
+
+#include "block.h"
 
 using namespace std;
 
@@ -41,6 +42,28 @@ std::vector<Block> Quadtree::findChild(Quadtree *tree, double x, double y){
 	//exit(0);
 	//return blocks;
 	return tree->blocks;
+
+	// 	if(!this->isLeaf()){
+
+	// 	if(x< (this->xmax + this->xmin)*0.5){
+	// 		if(y< (this->ymax + this->ymin)*0.5){
+	// 			return this->bl->findChild(x,y);
+	// 		}else{
+	// 			return this->tl->findChild(x,y);
+	// 		}
+	// 	}else{
+	// 		if(y< (this->ymax + this->ymin)*0.5){
+	// 			return this->br->findChild(x,y);
+	// 		}else{
+	// 			return this->tr->findChild(x,y);
+	// 		}
+	// 	}
+	// }
+	// //printf("size : %ld", tree->blocks.size());
+	// //exit(0);
+	// //return blocks;
+	// return this->blocks;
+
 }
 
 void Quadtree::insert(Block &b){
@@ -59,7 +82,7 @@ void Quadtree::insert(Block &b){
 	}else{
 		this->insertInChildren(b);
 	}
-	this->render();
+	// this->render();
 
 }
 
@@ -100,51 +123,14 @@ void Quadtree::render(){
 	glEnd();
 }
 
-void Quadtree::breadth(){
-	std::queue<Quadtree*> queue;
-	queue.push(this);
-
-	Quadtree* node;
-
-	int n =0;
-	while (!queue.empty()){
-		// printf("%d!!", n++); //debug
-		node = queue.front();
-		queue.pop();
-		node->render();
-		if (!this->isLeaf()){
-			queue.push(this->bl);
-			queue.push(this->br);
-			queue.push(this->tl);
-			queue.push(this->tr);
-		}
-	}
-}
-
 void Quadtree::depth(int gldraw){
-	// printf("depth call\n");
-	/*glBegin(GL_LINE_LOOP);
-		glVertex2d(this->xmin, this->ymin);
-		glVertex2d(this->xmax-this->xmin, this->ymin);
-		glVertex2d(this->xmax-this->xmin,  this->ymax-this->ymin);
-		glVertex2d(this->xmin, this->ymax-this->ymin);
-	glEnd();*/
 
-	/*Block rect(this->xmin, this->ymin, this->xmax-this->xmin, this->ymax-this->ymin);
-	rect.draw();*/
 	if (!this->isLeaf()){
 		this->bl->depth(gldraw);
 		this->br->depth(gldraw);
 		this->tl->depth(gldraw);
 		this->tr->depth(gldraw);
 	} else {
-		/*Block rect(this->xmin, this->ymin, this->xmax-this->xmin, this->ymax-this->ymin);
-		rect.draw();*/
-		//rect.props();
-		// printf("la taille du tableau : %ld \n", blocks.size());
-		// for (Block b:this->blocks){
-		// 	printf("%.2lf : %.2lf\n", b.getPosX(), b.getPosY());
-		// }
 		if (gldraw){
 			this->render();
 			// printf("xm : %d\nym : %d\nxM : %d\nyM : %d\n\n", this->xmin, this->ymin, this->xmax, this->ymax);
@@ -154,7 +140,10 @@ void Quadtree::depth(int gldraw){
 
 
 void Quadtree::initialize(std::vector<Block> tabBlocks){
+	int i=0;
 	for(Block b : tabBlocks){
+		printf("%d : \n", i++);
+		b.props(); //debug
 		this->insert(b);
 	}
 }
