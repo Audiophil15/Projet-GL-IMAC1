@@ -47,7 +47,7 @@ void Block::moverel(glm::vec2 dv){
 
 void Block::jump(){
 	if (!this->isJumping){
-		this->speed.y = 25.0;
+		this->speed.y = 23.0; //25
 		this->isJumping = 1;
 	}
 }

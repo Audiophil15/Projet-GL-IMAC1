@@ -18,8 +18,8 @@ void axis(int baseW, int baseH);
 int main(){
 
 	Window win;
+	win.zoom = getZoom("levels/level7");
 	Chara chara(3);
-
 	initSDL();
 	win.SDLWindow = initWindow(win.scrW, win.scrH);
 	win.GLContext = contextInit(win.SDLWindow);
@@ -51,8 +51,8 @@ int main(){
 
 
 	//std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>myblocks = creaWithFile("levels/level1");
-	std::vector<Block>charas = creaCharaWithFile("levels/level1");
+	std::vector<Block>myblocks = creaWithFile("levels/level7");
+	std::vector<Block>charas = creaCharaWithFile("levels/level7");
 	std::vector<Block> env;
 	//Quadtree quad = leveltree("levels/level4");
 
@@ -176,9 +176,10 @@ int main(){
 
 		camx = selectedBlock.getPosX();
 		camy = selectedBlock.getPosY();
-		camx = std::max(0., camx-win.baseW/2);
+		camx = std::max(0., camx-win.baseW*win.zoom/2);
+		//camx = std::max(0., camx-win.baseW/2);
 		// camx = min(camx, map.getWidth());
-		camy = std::max(0., camy-win.baseH/5);
+		camy = std::max(0., camy-win.baseH*win.zoom/5);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);

@@ -8,6 +8,7 @@
 std::vector<Block> creaWithFile(std::string namefile);
 std::vector<Block> creaCharaWithFile(std::string namefile);
 Quadtree leveltree(std::string namefile);
+double getZoom(std::string namefile);
 //void readColor(	char *file, double *r, double *g, double *b);
 //void readColor(char *file, char c, double *r, double *g, double *b);
 

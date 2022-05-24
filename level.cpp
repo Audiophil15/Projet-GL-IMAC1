@@ -22,9 +22,7 @@ std::vector<Block> creaWithFile(std::string namefile){
 	int v, d1, d2, d3, d4;
 	double zoom = 1;
 	char *parameter = (char *) malloc( 10 * sizeof(char));
-
 	char *file_contents = (char *) malloc( 50 * sizeof(char));
-
 	char *test = (char *) malloc( 10 * sizeof(char));
 
 	do{
@@ -40,9 +38,9 @@ std::vector<Block> creaWithFile(std::string namefile){
 				sscanf(file_contents, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
 			
-			case 'z' :
+			/*case 'z' :
 				sscanf(file_contents, "%*s %lf", &zoom);
-			break;
+			break;*/
 
 			default:
 			break;
@@ -68,7 +66,6 @@ std::vector<Block> creaWithFile(std::string namefile){
 	return myblocks;
 
 }
-
 
 std::vector<Block> creaCharaWithFile(std::string namefile){
 	std::vector<Block> charas;
@@ -98,7 +95,7 @@ std::vector<Block> creaCharaWithFile(std::string namefile){
 
 				sscanf(file_contents, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
 				//Block chara(x, y, sizeX, sizeY, 0.025,r,g,b, 0.376, 0.376);
-				Block chara(x, y, sizeX, sizeY, 0.025, 0., -58.8, r,g,b);
+				Block chara(x, y, sizeX, sizeY, 0.075, 0., -58.8, r,g,b);
 				charas.push_back(chara);
 			}
 			break;
@@ -125,11 +122,6 @@ Quadtree leveltree(std::string namefile){
 
 	do{
 	fscanf(file, "%[^\n] ", file_contents);
-	char * copy = (char *) malloc(strlen(file_contents) + 1); 
-	strcpy(copy, file_contents);
-	parameter = strtok(copy, " ");
-	printf("%s", file_contents);
-
 	switch(parameter[0]){
 			case 'q' : { 
 
@@ -146,4 +138,34 @@ Quadtree leveltree(std::string namefile){
 	//Quadtree tree(xmin*zoom, ymin*zoom, xmax*zoom, ymax*zoom);
 	Quadtree tree(xmin, ymin, xmax, ymax);
 	return tree;
+}
+
+double getZoom(std::string namefile){
+	double zoom = 1;
+
+	FILE* file = fopen(namefile.c_str() , "r");
+	char *parameter = (char *) malloc( 10 * sizeof(char));
+	char *file_contents = (char *) malloc( 50 * sizeof(char));
+
+	do{
+		fscanf(file, "%[^\n] ", file_contents);
+		char * copy = (char *) malloc(strlen(file_contents) + 1); 
+		strcpy(copy, file_contents);
+		parameter = strtok(copy, " ");
+		printf("%s", file_contents);
+
+		switch(parameter[0]){
+			case 'z' : { 
+				sscanf(file_contents, "%*s %lf", &zoom);
+			}
+			break;
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+
+	return zoom;
 }
