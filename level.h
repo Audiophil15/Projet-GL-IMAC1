@@ -1,6 +1,8 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
+#include <string>
+
 #include "block.h"
 #include "camera.h"
 #include "quadtree.h"
@@ -37,6 +39,7 @@ class Level{
 
 		Block* getCurrentPlayer();
 		void updatePlayer();
+		double getZoom(std::string filename);
 
 };
 

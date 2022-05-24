@@ -15,7 +15,6 @@
 int main(){
 
 	Window win;
-
 	initSDL();
 
 	GameEnvironment gameEnvironment;

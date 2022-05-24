@@ -6,4 +6,3 @@ Window::Window(int width, int height):baseW(80), baseH(40) ,scrW(width), scrH(he
 
 Window::Window(int glwidth, int glheight, int width, int height):baseW(glwidth), baseH(glheight), scrW(width), scrH(height), ratio(((float)glwidth/glheight)){};
 
-

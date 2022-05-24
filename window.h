@@ -5,6 +5,7 @@
 
 class Window {
 	public :
+		double zoom = 1;
 		const float baseH;
 		const float baseW;
 		const float ratio;

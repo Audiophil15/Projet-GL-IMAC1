@@ -2,6 +2,7 @@
 
 #include "gameEnvironment.h"
 
+#include "level.h"
 #include "graphics.h"
 #include "window.h"
 #include "menu.h"
@@ -119,5 +120,6 @@ void GameEnvironment::manageEvents(){
 void GameEnvironment::loadLevel(int level){
 	char path[50];
 	sprintf(path, "levels/level%d\0", level+1);
+	this->window.zoom = this->level.getZoom(path);
 	this->level = Level(path);
 }

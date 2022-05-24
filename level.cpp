@@ -54,10 +54,6 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
 
-			case 'z' :
-				sscanf(line, "%*s %d", &zoom);
-			break;
-
 			default:
 			break;
 		}
@@ -157,7 +153,7 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 }
 
 void Level::updateCamera(Window window){ // DEPLACER DANS CAMERA.CPP
-	this->camera.setPosition(this->currentPlayer->getPosition());
+	this->camera.setPosition(this->getCurrentPlayer()->getPosition());
 	this->camera.setX(std::max(0.f, this->camera.getX()-window.baseW/2));
 	this->camera.setY(std::max(0.f, this->camera.getY()-window.baseH/5));
 
@@ -218,12 +214,46 @@ void Level::switchCharacter(){
 
 void Level::manageEvent(SDL_Event e){
 	switch (e.type){
-		case SDLK_TAB :
-			this->switchCharacter();
+		case 769 : // Code for SDL_KEYDOWN (only here ?)
+			if (e.key.keysym.sym == SDLK_TAB){
+				this->switchCharacter();
+			}
 		break;
 
 		default :
 		break;
 
 	}
+}
+
+double Level::getZoom(std::string filename){
+	double zoom = 1;
+
+	FILE* file = fopen(filename.c_str() , "r");
+	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
+
+	char line[50];// = (char *) malloc( 50 * sizeof(char));
+	char copy[50];// = (char *) malloc(strlen(line) + 1);
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		char * copy = (char *) malloc(strlen(line) + 1);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("%s", line);
+
+		switch(parameter[0]){
+			case 'z' : {
+				sscanf(line, "%*s %lf", &zoom);
+			}
+			break;
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+
+	return zoom;
 }
