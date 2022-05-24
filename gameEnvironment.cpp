@@ -55,7 +55,7 @@ void GameEnvironment::play(int level){
 		this->level.updatePlayer();
 
 		char path[50];
-		sprintf(path, "levels/level%d\0", level+5);
+		sprintf(path, "levels/level%d\0", level+1);
 		this->level.display(this->window, path);
 
 	}
@@ -134,7 +134,7 @@ void GameEnvironment::manageEvents(){
 
 void GameEnvironment::loadLevel(int level){
 	char path[50];
-	sprintf(path, "levels/level%d\0", level+5);
+	sprintf(path, "levels/level%d\0", level+1);
 	this->level = Level(path);
 	this->window.zoom = this->level.getZoom(path);
 	windowResize(this->window.scrW, this->window.scrH, this->window);

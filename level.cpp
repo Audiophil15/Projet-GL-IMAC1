@@ -35,7 +35,7 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 	double r=1;
 	double g=1;
 	double b=1;
-	int v, d1, d2, d3, d4;
+	double v, d1, d2, d3, d4;
 	//int zoom = 1;
 	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
 
@@ -69,10 +69,10 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 
 	do {
 		v = 0;
-		v += fscanf(file, "%d", &d1);
-		v += fscanf(file, "%d", &d2);
-		v += fscanf(file, "%d", &d3);
-		v += fscanf(file, "%d", &d4);
+		v += fscanf(file, "%lf", &d1);
+		v += fscanf(file, "%lf", &d2);
+		v += fscanf(file, "%lf", &d3);
+		v += fscanf(file, "%lf", &d4);
 
 
 		if (v == 4){
@@ -90,11 +90,13 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 
 	FILE* file = fopen(filename.c_str() , "r");
 	char p;
+	double zoom = 1;
 	double r=1;
 	double g=1;
 	double b=1;
 	double x=0;
 	double y=0;
+	float j=21.;
 	double sizeX = 1;
 	double sizeY = 1;
 	Block* character;
@@ -110,9 +112,13 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 		// printf("%s\n", line);
 
 		switch(parameter[0]){
+			case 'z' :
+				sscanf(line, "%*s %lf", &zoom);
+			break;
+
 			case 'r' :
-				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
-				character = new Block(x, y, sizeX, sizeY, 0.025, 0., -58.8, r,g,b);
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf %f", &x, &y, &sizeX, &sizeY, &r, &g, &b, &j);
+				character = new Block(x, y, sizeX, sizeY, 0.045/zoom, 0., -58.8, r,g,b,j);
 				characters.push_back(character);
 			break;
 

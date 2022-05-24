@@ -6,23 +6,25 @@
 
 #include "block.h"
 
-Block::Block():Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(1){}
+Block::Block():Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(1), jumpValue(21.){}
 
 Block::Block(float adh):Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(adh){}
 
-Block::Block(double pos, double size):Rectangle{pos,pos,size,size,1,1,1}, speed({0,0}), acc({0,0}), adherence(1){}
+Block::Block(double pos, double size):Rectangle{pos,pos,size,size,1,1,1}, speed({0,0}), acc({0,0}), adherence(1),jumpValue(21.){}
 
-Block::Block(double pos, double size, float adh):Rectangle{pos,pos,size,size,1,1,1}, speed({0,0}), acc({0,0}), adherence(adh){}
+Block::Block(double pos, double size, float adh):Rectangle{pos,pos,size,size,1,1,1}, speed({0,0}), acc({0,0}), adherence(adh), jumpValue(21.){}
 
-Block::Block(double x, double y, double w, double h):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({0,0}), adherence(1){}
+Block::Block(double x, double y, double w, double h):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({0,0}), adherence(1), jumpValue(21.){}
 
-Block::Block(double x, double y, double w, double h, float adh):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({0,0}), adherence(adh){}
+Block::Block(double x, double y, double w, double h, float adh):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({0,0}), adherence(adh), jumpValue(21.){}
 
-Block::Block(double x, double y, double w, double h, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(1){}
+Block::Block(double x, double y, double w, double h, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(1), jumpValue(21.){}
 
-Block::Block(double x, double y, double w, double h, float adh, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(adh){}
+Block::Block(double x, double y, double w, double h, float adh, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(adh), jumpValue(21.){}
 
-Block::Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({accX, accY}), adherence(adh){}
+Block::Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({accX, accY}), adherence(adh), jumpValue(21.){}
+
+Block::Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b, float j):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({accX, accY}), adherence(adh), jumpValue(j){}
 
 
 void Block::moveto(int x, int y){
@@ -48,7 +50,7 @@ void Block::moverel(glm::vec2 dv){
 void Block::jump(){
 	if (!this->isJumping){
 
-		this->speed.y = 25.0;
+		this->speed.y = this->jumpValue;
 		this->isJumping = 1;
 	}
 }
