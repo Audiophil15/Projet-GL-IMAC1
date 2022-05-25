@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <GL/gl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -95,7 +96,7 @@ void Block::updatePosition(std::vector<Block> environment){
 
 }
 
-int Block::collidesWith(Block b){
+int Block::collidesWith(Rectangle b){
 	return !(this->getPosX() > b.getPosX()+b.getWidth() || this->getPosX()+this->getWidth() < b.getPosX() || this->getPosY() > b.getPosY()+b.getHeight() || this->getPosY()+this->getHeight() < b.getPosY());
 }
 
@@ -138,4 +139,14 @@ void Block::moveFromInputs(){
 
 void Block::printInputs(){
 	printf("L %d : R %d : S %d\n", (int)keystate[SDL_SCANCODE_LEFT], (int)keystate[SDL_SCANCODE_RIGHT], (int)keystate[SDL_SCANCODE_SPACE] || (int)keystate[SDL_SCANCODE_UP]);
+}
+
+void Block::drawSelect(){
+	glColor3d(1,1,1);
+
+	glBegin(GL_TRIANGLES);
+		glVertex2d(this->getCenterX()-0.25, this->getPosY()+this->getHeight()+1.);
+		glVertex2d(this->getCenterX()+0.25, this->getPosY()+this->getHeight()+1);
+		glVertex2d(this->getCenterX(), this->getPosY()+this->getHeight()+0.5);
+	glEnd();
 }

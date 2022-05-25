@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "block.h"
+#include "portail.h"
 #include "camera.h"
 #include "quadtree.h"
 #include "string"
@@ -13,6 +14,7 @@ class Level{
 		std::vector<Block> map;
 		std::vector<Block> localEnv;
 		std::vector<Block*> characters;
+		int test;
 		Quadtree platformsTree;
 		Camera camera;
 
@@ -21,6 +23,7 @@ class Level{
 
 		std::vector<Block> mapFromFile(std::string filename);
 		std::vector<Block*> charactersFromFile(std::string filename);
+		std::vector<Portail> portailsFromFile(std::string filename);
 		Quadtree quadtreeFromFile(std::string filename);
 
 	public :

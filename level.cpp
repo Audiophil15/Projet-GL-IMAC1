@@ -22,6 +22,7 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	// }
 	this->characters = this->charactersFromFile(filename);
 	this->platformsTree = this->quadtreeFromFile(filename);
+	//this->exits = this->portailsFromFile(filename);
 	//this->getZoom(filename);
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
@@ -132,6 +133,49 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 	return characters;
 
 }
+
+
+/*std::vector<Portail> Level::portailsFromFile(std::string filename){
+	std::vector<Portail> portails;
+
+	FILE* file = fopen(filename.c_str() , "r");
+
+	double r=1;
+	double g=1;
+	double b=1;
+	double x=0;
+	double y=0;
+	double sizeX = 1;
+	double sizeY = 1;
+	char parameter[10];
+	char line[50];
+	char copy[50];
+
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("%s\n", line);
+
+		switch(parameter[0]){
+			case 'e' :{ 
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
+				Portail exit(x, y, sizeX, sizeY, r,g,b);
+				portails.push_back(exit);
+			}
+			break;
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+
+	return portails;
+
+}*/
 
 Quadtree Level::quadtreeFromFile(std::string filename){
 	int xmin=0;
@@ -277,10 +321,11 @@ void Level::display(Window window, std::string filename){
 		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
 		// glColor3f(0,1,0);
 		// axis(window.baseW, window.baseH);
-
+		this->currentPlayer->drawSelect();
 		// this->currentPlayer->draw();
 		for (Block* character:this->characters){
 			character->draw();
+			
 		}
 		for (Block b : this->localEnv){
 			b.draw();
@@ -296,6 +341,7 @@ void Level::display(Window window, std::string filename){
 void Level::updatePlayer(){
 	this->getCurrentPlayer()->moveFromInputs();
 	this->getCurrentPlayer()->updatePosition(this->localEnv);
+	
 }
 
 void Level::switchCharacter(){

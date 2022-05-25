@@ -33,7 +33,7 @@ class Block : public Rectangle {
 		void moverel(int x, int y);
 		void moveto(glm::vec2);
 		void moverel(glm::vec2);
-		int collidesWith(Block);
+		int collidesWith(Rectangle b);
 		int isHorizontalTo(Block b);
 		int isVerticalTo(Block b);
 		int isLeftTo(Block b);
@@ -48,6 +48,7 @@ class Block : public Rectangle {
 		void moveFromInputs();
 		void manageEvent(SDL_Event);
 		void printInputs();
+		void drawSelect();
 
 };
 
