@@ -251,11 +251,19 @@ Block* Level::getCurrentPlayer(){
 
 void Level::updateLocalEnv(){
 	// DEBUG
-	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
+	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY())
+	//this->localEnv.push_back(*(this->characters[0]));
+	//this->localEnv.push_back(*(this->characters[1]));
+	
+	for(int i=0; i<this->characters.size(); i++){
+		if(i!=this->currentPlayerIndex){
+
+		this->localEnv.push_back(*(this->characters[i]));
+	}
+	}
 }
 
 void Level::display(Window window, std::string filename){
-
 	this->updateCamera(window, filename);
 
 	glClear(GL_COLOR_BUFFER_BIT);
