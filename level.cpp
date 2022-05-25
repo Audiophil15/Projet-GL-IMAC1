@@ -118,7 +118,7 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 
 			case 'r' :
 				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf %f", &x, &y, &sizeX, &sizeY, &r, &g, &b, &j);
-				character = new Block(x, y, sizeX, sizeY, 0.045/zoom, 0., -58.8, r,g,b,j);
+				character = new Block(x, y, sizeX, sizeY, 0.09, 0., -58.8, r,g,b,j);
 				characters.push_back(character);
 			break;
 
