@@ -23,6 +23,11 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	this->platformsTree = this->quadtreeFromFile(filename);
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
+
+
+	//music
+	this->music = this->musicFromFile(filename);
+	
 }
 
 std::vector<Block> Level::mapFromFile(std::string filename){
@@ -152,6 +157,14 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 	return tree;
 }
 
+//music from file
+Mix_Music* Level::musicFromFile(std::string filename){
+
+}
+
+
+
+
 void Level::updateCamera(Window window){ // DEPLACER DANS CAMERA.CPP
 	this->camera.setPosition(this->getCurrentPlayer()->getPosition());
 	this->camera.setX(std::max(0.f, this->camera.getX()-window.baseW/2));
@@ -169,7 +182,7 @@ void Level::updateLocalEnv(){
 }
 
 void Level::display(Window window){
-
+	//a deplacer (methode de camera)
 	this->updateCamera(window);
 
 	glClear(GL_COLOR_BUFFER_BIT);

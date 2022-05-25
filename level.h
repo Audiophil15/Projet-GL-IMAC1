@@ -2,12 +2,15 @@
 #define LEVEL_H
 
 #include <string>
+#include <SDL2/SDL_mixer.h>
+
 
 #include "block.h"
 #include "camera.h"
 #include "quadtree.h"
 #include "string"
 #include "window.h"
+#include "music.h"
 
 class Level{
 
@@ -17,13 +20,15 @@ class Level{
 		std::vector<Block*> characters;
 		Quadtree platformsTree;
 		Camera camera;
-
+		Music music;
+		
 		int currentPlayerIndex;
 		Block* currentPlayer;
 
 		std::vector<Block> mapFromFile(std::string filename);
 		std::vector<Block*> charactersFromFile(std::string filename);
 		Quadtree quadtreeFromFile(std::string filename);
+	
 
 	public :
 

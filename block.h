@@ -15,6 +15,8 @@ class Block : public Rectangle {
 		int isMovingRight, isMovingLeft, isJumping;
 		const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
+		//music to jump
+
 	public:
 
 		Block();

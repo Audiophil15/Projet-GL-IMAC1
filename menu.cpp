@@ -157,6 +157,7 @@ int mainMenu(Window win){
 
 
 
+//a modif (rajouter new york)
 int choiceLevel(Window win){
 
 	int choice;
