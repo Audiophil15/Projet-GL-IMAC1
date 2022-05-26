@@ -7,7 +7,7 @@
 #include "window.h"
 #include "menu.h"
 
-#define LAST_LEVEL 4
+#define LAST_LEVEL 3
 
 GameEnvironment::GameEnvironment():quit(0){}
 
@@ -21,8 +21,14 @@ void GameEnvironment::startGame(){
 				if (level >= 0){
 					this->loadLevel(level);
 					this->play(level);
-					if (!this->quit && level == LAST_LEVEL){
-						this->quit = menuFinal(this->window);
+
+
+					if (!this->quit && level+1 == LAST_LEVEL && !this->gameOver){
+						this->quit = menuVictory(this->window);
+					}
+
+					if(!this->quit && this->gameOver){
+						this->quit = menuGameOver(this->window);
 					}
 				}
 			break;
@@ -44,6 +50,7 @@ void GameEnvironment::startGame(){
 
 void GameEnvironment::play(int level){
 	this->gameloop = 1;
+	this->gameOver = 0;
 
 	while (this->gameloop && !this->quit){
 		// this->level.getCurrentPlayer()->printInputs(); //debug
@@ -55,8 +62,28 @@ void GameEnvironment::play(int level){
 
 		
 		char path[50];
-		sprintf(path, "levels/level%d", level+5);
+		sprintf(path, "levels/level%d", level+1);
 		this->level.display(this->window, path);
+
+		if(this->level.nextLevel()){
+			
+			if(level+2 > LAST_LEVEL){
+				this->gameloop=0;
+				this->window.zoom=1;
+				windowResize(this->window.scrW, this->window.scrH, this->window);	
+				
+			}else{ 
+			this->loadLevel(level+1);
+			this->play(level+1);
+			}
+		};
+
+		if(this->level.gameOver()){
+			this->gameloop=0;
+			this->gameOver = 1;
+			this->window.zoom=1;
+			windowResize(this->window.scrW, this->window.scrH, this->window);	
+		}
 
 	}
 }
@@ -134,7 +161,7 @@ void GameEnvironment::manageEvents(){
 
 void GameEnvironment::loadLevel(int level){
 	char path[50];
-	sprintf(path, "levels/level%d", level+5);
+	sprintf(path, "levels/level%d", level+1);
 	this->window.zoom = this->level.getZoom(path);
 	this->level = Level(path);
 	windowResize(this->window.scrW, this->window.scrH, this->window);

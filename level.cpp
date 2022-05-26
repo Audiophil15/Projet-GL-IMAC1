@@ -22,6 +22,7 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	// }
 	this->characters = this->charactersFromFile(filename);
 	this->platformsTree = this->quadtreeFromFile(filename);
+	this->exits = this->portailsFromFile(filename);
 	//this->exits = this->portailsFromFile(filename);
 	//this->getZoom(filename);
 	// this->platformsTree.initialize(this->map);
@@ -172,6 +173,50 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 }
 
 
+std::vector<Portail> Level::portailsFromFile(std::string filename){
+	std::vector<Portail> portails;
+
+	FILE* file = fopen(filename.c_str() , "r");
+
+	double r=1;
+	double g=1;
+	double b=1;
+	double x=0;
+	double y=0;
+	double sizeX = 1;
+	double sizeY = 1;
+	char parameter[10];
+	char line[50];
+	char copy[50];
+
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("%s\n", line);
+
+		switch(parameter[0]){
+			case 'e' :{ 
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
+				Portail exit(x, y, sizeX, sizeY, r,g,b);
+				portails.push_back(exit);
+			}
+			break;
+
+			default:
+			break;
+
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+
+	return portails;
+
+}
+
+
 double Level::getZoom(std::string filename){
 	double zoom = 1;
 
@@ -258,6 +303,31 @@ Block* Level::getCurrentPlayer(){
 	return this->currentPlayer;
 }
 
+int Level::foundPortail(){
+	int foundNumber = 0;
+	/*for (Portail p : this->exits){
+		if(this->getCurrentPlayer()->collidesWith(p) && p.isExit(this->getCurrentPlayer())){
+			p.isFound();
+		}
+		foundNumber += p.getFound();
+	}*/
+	for(int i=0; i< this->exits.size();i++){
+		if(this->characters[i]->collidesWith(this->exits[i]) && this->exits[i].isExit(this->characters[i])){
+			this->exits[i].isFound();
+		}
+		foundNumber += this->exits[i].getFound();
+	}
+	return foundNumber;
+}
+
+int Level::nextLevel(){
+	return (this->foundPortail() == this->characters.size());
+}
+
+int Level::gameOver(){
+	return(this->getCurrentPlayer()->getPosY()<=0);
+}
+
 void Level::updateLocalEnv(){
 	// DEBUG
 	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY())
@@ -285,6 +355,11 @@ void Level::display(Window window, std::string filename){
 		// glColor3f(0,1,0);
 		// axis(window.baseW, window.baseH);
 		this->currentPlayer->drawSelect();
+
+		for (Portail p : this->exits){
+			p.draw();
+		}
+
 		for (Block* character:this->characters){
 			character->draw();
 			

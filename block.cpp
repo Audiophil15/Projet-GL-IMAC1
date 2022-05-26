@@ -88,7 +88,7 @@ void Block::updatePosition(std::vector<Block> environment){
 
 }
 
-int Block::collidesWith(Block b){
+int Block::collidesWith(Rectangle b){
 	return !(this->getPosX() > b.getPosX()+b.getWidth() || this->getPosX()+this->getWidth() < b.getPosX() || this->getPosY() > b.getPosY()+b.getHeight() || this->getPosY()+this->getHeight() < b.getPosY());
 }
 

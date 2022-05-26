@@ -6,6 +6,7 @@
 #include "block.h"
 #include "camera.h"
 #include "quadtree.h"
+#include "portail.h"
 #include "string"
 #include "window.h"
 
@@ -15,6 +16,7 @@ class Level{
 		std::vector<Block> map;
 		std::vector<Block> localEnv;
 		std::vector<Block*> characters;
+		std::vector<Portail> exits;
 		Quadtree platformsTree;
 		Camera camera;
 		int currentPlayerIndex;
@@ -23,6 +25,7 @@ class Level{
 		std::vector<Block> mapFromFile(std::string filename);
 		std::vector<Block*> charactersFromFile(std::string filename);
 		Quadtree quadtreeFromFile(std::string filename);
+		std::vector<Portail> portailsFromFile(std::string filename);
 
 	public :
 
@@ -39,6 +42,9 @@ class Level{
 		void updatePlayer();
 		double getZoom(std::string filename);
 		glm::vec2 getBornes(std::string filename);
+		int foundPortail();
+		int nextLevel();
+		int gameOver();
 
 };
 

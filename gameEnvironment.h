@@ -10,6 +10,7 @@ class GameEnvironment{
 		// enum
 		int quit;
 		int gameloop;
+		int gameOver;
 		Level level;
 
 	public :
