@@ -188,7 +188,7 @@ int menuPause(Window win){
 	std::vector<std::string>choices;
 	std::vector<Rectangle> rects;
 
-	choices.push_back("backToGame");
+	choices.push_back("backtogame");
 	choices.push_back("rules");
 	choices.push_back("options");
 	choices.push_back("quit");
@@ -199,15 +199,18 @@ int menuPause(Window win){
 	Rectangle rectOptions(57.,23., 18., 3.);
 	Rectangle rectQuit(65., 17., 10., 4.);
 	Rectangle rectBack(65., 2., 12., 3.);
+
 	rects.push_back(rectBackToGame);
 	rects.push_back(rectRules);
 	rects.push_back(rectOptions);
 	rects.push_back(rectQuit);
 	rects.push_back(rectBack);
 
+
 	choice = menu(win, "./src/background-pause.png", choices, rects);
 
 	return (choice+1)%5-1;
+
 }
 
 int menuRules(Window win){

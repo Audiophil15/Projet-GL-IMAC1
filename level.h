@@ -17,7 +17,6 @@ class Level{
 		std::vector<Block*> characters;
 		Quadtree platformsTree;
 		Camera camera;
-
 		int currentPlayerIndex;
 		Block* currentPlayer;
 
@@ -31,15 +30,15 @@ class Level{
 		Level(std::string filename);
 
 		void manageEvent(SDL_Event);
-		void display(Window);
-
+		void display(Window, std::string filename);
 		void switchCharacter();
-		void updateCamera(Window);
+		void updateCamera(Window, std::string filename);
 		void updateLocalEnv();
 
 		Block* getCurrentPlayer();
 		void updatePlayer();
 		double getZoom(std::string filename);
+		glm::vec2 getBornes(std::string filename);
 
 };
 

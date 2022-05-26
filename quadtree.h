@@ -23,8 +23,6 @@ class Quadtree {
 		bool isLeaf();
 		bool isFilled();
 		void insertInChildren(Block &b);
-		void insertRight(Block &b);
-		void insertLeft(Block &b);
 		void createChildren();
 		int getCenterX();
 		int getCenterY();

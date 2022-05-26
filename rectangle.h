@@ -35,7 +35,6 @@ class Rectangle{
 		double getCenterX();
 		double getCenterY();
 		void props();
-		void setColor(double r, double g, double b);
 };
 
 

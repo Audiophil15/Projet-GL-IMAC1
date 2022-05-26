@@ -5,13 +5,13 @@
 
 class Window {
 	public :
-		double zoom = 1;
 		const float baseH;
 		const float baseW;
 		const float ratio;
 		float scrH, scrW;
 		SDL_Window* SDLWindow;
 		SDL_GLContext GLContext;
+		float zoom=1;
 
 		Window();
 		Window(int width, int height);

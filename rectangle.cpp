@@ -54,9 +54,3 @@ double Rectangle::getCenterX(){
 double Rectangle::getCenterY(){
 	return this->getPosY()+this->getHeight()/2;
 }
-
-void Rectangle::setColor(double r, double g, double b){
-	this->color.r = r;
-	this->color.g = g;
-	this->color.b = b;
-}

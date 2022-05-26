@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
+#include <glm/vec2.hpp>
 
 #include "level.h"
 
@@ -21,6 +22,8 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	// }
 	this->characters = this->charactersFromFile(filename);
 	this->platformsTree = this->quadtreeFromFile(filename);
+	//this->exits = this->portailsFromFile(filename);
+	//this->getZoom(filename);
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
 }
@@ -33,8 +36,8 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 	double r=1;
 	double g=1;
 	double b=1;
-	int v, d1, d2, d3, d4;
-	int zoom = 1;
+	double v, d1, d2, d3, d4;
+	//int zoom = 1;
 	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
 
 	char line[50];// = (char *) malloc( 50 * sizeof(char));
@@ -54,6 +57,10 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
 
+			/*case 'z' :
+				sscanf(line, "%*s %d", &zoom);
+			break;*/
+
 			default:
 			break;
 		}
@@ -63,18 +70,19 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 
 	do {
 		v = 0;
-		v += fscanf(file, "%d", &d1);
-		v += fscanf(file, "%d", &d2);
-		v += fscanf(file, "%d", &d3);
-		v += fscanf(file, "%d", &d4);
+		v += fscanf(file, "%lf", &d1);
+		v += fscanf(file, "%lf", &d2);
+		v += fscanf(file, "%lf", &d3);
+		v += fscanf(file, "%lf", &d4);
 
 
 		if (v == 4){
-			Block block(d1*zoom, d2*zoom, d3*zoom, d4*zoom,r,g,b);
+			Block block(d1, d2, d3, d4,r,g,b);
 			blocks.push_back(block);
 			}
 	} while (v == 4);
 
+	fclose(file);
 	return blocks;
 
 }
@@ -84,11 +92,13 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 
 	FILE* file = fopen(filename.c_str() , "r");
 	char p;
+	double zoom = 1;
 	double r=1;
 	double g=1;
 	double b=1;
 	double x=0;
 	double y=0;
+	float j=21.;
 	double sizeX = 1;
 	double sizeY = 1;
 	Block* character;
@@ -104,9 +114,13 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 		// printf("%s\n", line);
 
 		switch(parameter[0]){
+			case 'z' :
+				sscanf(line, "%*s %lf", &zoom);
+			break;
+
 			case 'r' :
-				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
-				character = new Block(x, y, sizeX, sizeY, 0.025, 0., -58.8, r,g,b);
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf %f", &x, &y, &sizeX, &sizeY, &r, &g, &b, &j);
+				character = new Block(x, y, sizeX, sizeY, 0.09, 0., -58.8, r,g,b,j);
 				characters.push_back(character);
 			break;
 
@@ -117,9 +131,12 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
 
+	fclose(file);
 	return characters;
 
 }
+
+
 
 Quadtree Level::quadtreeFromFile(std::string filename){
 	int xmin=0;
@@ -149,15 +166,93 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
 	Quadtree tree(xmin, ymin, xmax, ymax);
+
+	fclose(file);
 	return tree;
 }
 
-void Level::updateCamera(Window window){ // DEPLACER DANS CAMERA.CPP
-	this->camera.setPosition(this->getCurrentPlayer()->getPosition());
-	this->camera.setX(std::max(0.f, this->camera.getX()-window.baseW/2));
-	this->camera.setY(std::max(0.f, this->camera.getY()-window.baseH/5));
+
+double Level::getZoom(std::string filename){
+	double zoom = 1;
+
+	FILE* file = fopen(filename.c_str() , "r");
+	char parameter[10];
+	char line[50];
+	char copy[50];
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+
+		switch(parameter[0]){
+			case 'z' : { 
+				sscanf(line, "%*s %lf", &zoom);
+			}
+			break;
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+	fclose(file);
+	return zoom;
+}
+
+glm::vec2 Level::getBornes(std::string filename){
+	/*int xmax = 100;
+	int ymax = 50;*/
+	glm::vec2 border;
+	border.x = 150;
+	border.y = 50;
+
+	FILE* file = fopen(filename.c_str() , "r");
+	char parameter[10];
+	char line[50];
+	char copy[50];
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+
+		switch(parameter[0]){
+			case 'b' : { 
+				sscanf(line, "%*s %f %f" , &border.x, &border.y);
+			}
+			break;
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+	
+	fclose(file);
+	return border;
+}
+
+void Level::updateCamera(Window window, std::string filename){ // DEPLACER DANS CAMERA.CPP
+	glm::vec2 bornes;
+	this->camera.setPosition(this->currentPlayer->getPosition());
+	this->camera.setX(std::max(0.f, this->camera.getX()-(window.baseW*window.zoom)/2));
+	this->camera.setY(std::max(0.f, this->camera.getY()-(window.baseH*window.zoom)/5));
+
+	bornes = this->getBornes(filename);
+
+	if(camera.getX() > bornes.x-window.baseW*window.zoom){
+		camera.setX(bornes.x-window.baseW*window.zoom);
+	}
+
+	if(camera.getY() > bornes.y-window.baseH*window.zoom){
+		camera.setY(bornes.y-window.baseH*window.zoom);
+	}
+
 
 }
+
 
 Block* Level::getCurrentPlayer(){
 	return this->currentPlayer;
@@ -165,12 +260,18 @@ Block* Level::getCurrentPlayer(){
 
 void Level::updateLocalEnv(){
 	// DEBUG
-	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
+	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY())
+	
+	for(int i=0; i<this->characters.size(); i++){
+		if(i!=this->currentPlayerIndex){
+
+		this->localEnv.push_back(*(this->characters[i]));
+	}
+	}
 }
 
-void Level::display(Window window){
-
-	this->updateCamera(window);
+void Level::display(Window window, std::string filename){
+	this->updateCamera(window, filename);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -183,10 +284,10 @@ void Level::display(Window window){
 		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
 		// glColor3f(0,1,0);
 		// axis(window.baseW, window.baseH);
-
-		// this->currentPlayer->draw();
+		this->currentPlayer->drawSelect();
 		for (Block* character:this->characters){
 			character->draw();
+			
 		}
 		for (Block b : this->localEnv){
 			b.draw();
@@ -202,58 +303,27 @@ void Level::display(Window window){
 void Level::updatePlayer(){
 	this->getCurrentPlayer()->moveFromInputs();
 	this->getCurrentPlayer()->updatePosition(this->localEnv);
+	
 }
 
 void Level::switchCharacter(){
 	this->currentPlayerIndex = (this->currentPlayerIndex+1)%this->characters.size();
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
-	for (Block* b:this->characters){
-
-	}
+	//this->updatePlayer();
+	/*for (Block* b:this->characters){
+		this->updatePlayer();
+	}*/
 }
 
 void Level::manageEvent(SDL_Event e){
 	switch (e.type){
-		case 769 : // Code for SDL_KEYDOWN (only here ?)
-			if (e.key.keysym.sym == SDLK_TAB){
-				this->switchCharacter();
-			}
+		case SDLK_TAB :
+			printf("test");
+			this->switchCharacter();
 		break;
 
 		default :
 		break;
 
 	}
-}
-
-double Level::getZoom(std::string filename){
-	double zoom = 1;
-
-	FILE* file = fopen(filename.c_str() , "r");
-	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
-
-	char line[50];// = (char *) malloc( 50 * sizeof(char));
-	char copy[50];// = (char *) malloc(strlen(line) + 1);
-
-	do{
-		fscanf(file, "%[^\n] ", line);
-		char * copy = (char *) malloc(strlen(line) + 1);
-		strcpy(copy, line);
-		strcpy(parameter, strtok(copy, " "));
-		// printf("%s", line);
-
-		switch(parameter[0]){
-			case 'z' : {
-				sscanf(line, "%*s %lf", &zoom);
-			}
-			break;
-
-			default:
-			break;
-		}
-
-	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
-
-
-	return zoom;
 }
