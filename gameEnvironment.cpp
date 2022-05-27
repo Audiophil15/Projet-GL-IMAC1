@@ -7,7 +7,7 @@
 #include "window.h"
 #include "menu.h"
 
-#define LAST_LEVEL 3
+#define LAST_LEVEL 7
 
 GameEnvironment::GameEnvironment():quit(0){}
 
@@ -18,6 +18,7 @@ void GameEnvironment::startGame(){
 			case 0 :
 				int level;
 				level = choiceLevel(this->window);
+				printf("level vaut %d\n", level);
 				if (level >= 0){
 					this->loadLevel(level);
 					this->play(level);
