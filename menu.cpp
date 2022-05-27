@@ -289,7 +289,7 @@ int menuVictory(Window win){
 	rects.push_back(rectMenu);
 	rects.push_back(rectQuit);
 
-	choice = menu(win, "./src/background-victory.png", choices, rects, 2);
+	choice = menu(win, "./src/background-final.png", choices, rects, 2);
 
 	return choice;
 }
