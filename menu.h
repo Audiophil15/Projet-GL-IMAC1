@@ -6,7 +6,7 @@
 #include "window.h"
 #include "rectangle.h"
 
-int menu(Window win, std::string background, std::vector<std::string> choices, std::vector<Rectangle> boxes);
+int menu(Window win, std::string background, std::vector<std::string> choices, std::vector<Rectangle> boxes, int l);
 // int menu(Window win);
 int choiceLevel(Window win);
 int menuPause(Window win);

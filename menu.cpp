@@ -13,7 +13,7 @@
 #include "rectangle.h"
 #include "window.h"
 
-int menu(Window win, std::string background, std::vector<std::string> choices, std::vector<Rectangle> boxes){
+int menu(Window win, std::string background, std::vector<std::string> choices, std::vector<Rectangle> boxes, int l){
 
 	int choice;
 	GLuint bg = initializeTexure(background.c_str());
@@ -34,6 +34,8 @@ int menu(Window win, std::string background, std::vector<std::string> choices, s
 	}
 
 	int nbC = 0;
+	int i=0;
+	int j=0;
 
 	Choice selected = tabChoices[nbC];
 
@@ -62,17 +64,25 @@ int menu(Window win, std::string background, std::vector<std::string> choices, s
 					break;
 
 					case SDLK_UP:
-						if(nbC>0){
-							nbC-=1;
-						}else{
-							nbC=choices.size()-1;
-						}
-						selected = tabChoices[nbC];
+					nbC=nbC-l+(nbC==0)*choices.size();;
+
+
+					selected = tabChoices[nbC];
 					break;
 
 					case SDLK_DOWN:
-						nbC = (nbC+1)%choices.size();
-						selected = tabChoices[nbC];
+					nbC=(nbC+l)%choices.size();
+					selected = tabChoices[nbC];
+					break;
+
+					case SDLK_RIGHT:
+					nbC= (nbC+1)%choices.size();
+					selected = tabChoices[nbC];
+					break;
+
+					case SDLK_LEFT:
+					nbC = nbC-1+(nbC==0)*choices.size();
+					selected = tabChoices[nbC];
 					break;
 
 					case SDLK_RETURN:
@@ -80,6 +90,8 @@ int menu(Window win, std::string background, std::vector<std::string> choices, s
 					break;
 
 				}
+
+				
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:
@@ -150,7 +162,7 @@ int mainMenu(Window win){
 	rects.push_back(rectOptions);
 	rects.push_back(rectQuit);
 
-	choice = menu(win, "./src/background-mainMenu.png", choices, rects);
+	choice = menu(win, "./src/background-mainMenu.png", choices, rects, 1);
 
 	return choice;
 }
@@ -163,21 +175,36 @@ int choiceLevel(Window win){
 	std::vector<std::string>choices;
 	std::vector<Rectangle> rects;
 
-	choices.push_back("paris");
-	choices.push_back("rome");
+	choices.push_back("agra");
+	choices.push_back("mexico");
 	choices.push_back("tokyo");
+	choices.push_back("sydney");
+	choices.push_back("paris");
+	choices.push_back("ny");
+	choices.push_back("rome");
 	choices.push_back("back");
 
-	Rectangle rectParis(4.,17., 21., 11.);
-	Rectangle rectRome(29., 17., 21., 11.);
-	Rectangle rectTokyo(54.,17., 21., 11.);
+	Rectangle rectAgra(12., 30., 17., 8.);
+	Rectangle rectMexico(31., 30., 17., 8.);
+	Rectangle rectTokyo(50., 30., 17., 8.);
+	Rectangle rectSydney(12., 20., 17., 8.);
+	Rectangle rectParis(31., 20., 17., 8.);
+	Rectangle rectNy(50., 20., 17., 8.);
+	Rectangle rectRome(12., 10., 17., 8.);
 	Rectangle rectBack(65., 2., 12., 3.);
-	rects.push_back(rectParis);
-	rects.push_back(rectRome);
+
+
+	rects.push_back(rectAgra);
+	rects.push_back(rectMexico);
 	rects.push_back(rectTokyo);
+	rects.push_back(rectSydney);
+	rects.push_back(rectParis);
+	rects.push_back(rectNy);
+	rects.push_back(rectRome);
 	rects.push_back(rectBack);
 
-	choice = menu(win, "./src/background-levelChoice.png", choices, rects);
+	choice = menu(win, "./src/background-levelChoice.png", choices, rects, 3);
+	// choice = menu(win, "./src/test.png", choices, rects);
 
 	return (choice+1)%4-1;
 }
@@ -205,7 +232,7 @@ int menuPause(Window win){
 	rects.push_back(rectQuit);
 	rects.push_back(rectBack);
 
-	choice = menu(win, "./src/background-pause.png", choices, rects);
+	choice = menu(win, "./src/background-pause.png", choices, rects, 1);
 
 	return (choice+1)%5-1;
 }
@@ -221,7 +248,7 @@ int menuRules(Window win){
 	Rectangle rectBack(65., 2., 12., 3.);
 	rects.push_back(rectBack);
 
-	choice = menu(win, "./src/background-rules.png", choices, rects);
+	choice = menu(win, "./src/background-rules.png", choices, rects, 1);
 
 	return choice;
 }
@@ -237,7 +264,7 @@ int menuSettings(Window win){
 	Rectangle rectBack(65., 2., 12., 3.);
 	rects.push_back(rectBack);
 
-	choice = menu(win, "./src/background-settings.png", choices, rects);
+	choice = menu(win, "./src/background-settings.png", choices, rects, 1);
 
 	return choice;
 }
@@ -256,7 +283,7 @@ int menuVictory(Window win){
 	rects.push_back(rectMenu);
 	rects.push_back(rectQuit);
 
-	choice = menu(win, "./src/background-victory.png", choices, rects);
+	choice = menu(win, "./src/background-victory.png", choices, rects, 2);
 
 	return choice;
 }
@@ -278,7 +305,7 @@ int menuGameOver(Window win){
 	rects.push_back(rectRetry);
 	rects.push_back(rectQuit);
 
-	choice = menu(win, "./src/background-gameOver.png", choices, rects);
+	choice = menu(win, "./src/background-gameOver.png", choices, rects, 3);
 
 	return choice;
 }
@@ -294,7 +321,7 @@ int menuFinal(Window win){
 	Rectangle rectBack(65., 2., 12., 3.);
 	rects.push_back(rectBack);
 
-	choice = menu(win, "./src/background-final.png", choices, rects);
+	choice = menu(win, "./src/background-final.png", choices, rects, 1);
 
 	return choice;
 }
