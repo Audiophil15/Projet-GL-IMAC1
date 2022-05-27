@@ -23,7 +23,7 @@ void GameEnvironment::startGame(){
 					this->play(level);
 
 
-					if (!this->quit && level+1 == LAST_LEVEL && !this->gameOver){
+					if (!this->quit && level+1 == LAST_LEVEL && this->gameOver==0){
 						this->quit = menuVictory(this->window);
 					}
 
