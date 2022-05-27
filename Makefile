@@ -1,6 +1,6 @@
 CC = g++
 CXXFLAGS = -g -MMD
-LIBFLAGS = -lSDL2 -lGL -lGLU -lm -lSDL2_image
+LIBFLAGS = -lSDL2 -lGL -lGLU -lm -lSDL2_image -lSDL2_mixer
 SOURCES = $(filter-out main.cpp treetest.cpp, $(wildcard *.cpp))
 OBJ = $(SOURCES:.cpp=.o)
 DEPENDS = $(SOURCES:.cpp=.d)

@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdio.h>
@@ -11,6 +12,7 @@
 #include "block.h"
 #include "camera.h"
 #include "quadtree.h"
+#include "music.h"
 
 Level::Level(){}
 
@@ -27,6 +29,8 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	//this->getZoom(filename);
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
+	
+	//this->music.initializeFromFile(filename);
 }
 
 std::vector<Block> Level::mapFromFile(std::string filename){
@@ -137,6 +141,40 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 
 }
 
+// std::string Level::musicFromFile(std::string filename){
+
+// 	FILE* file = fopen(filename.c_str() , "r");
+// 	char* levelMusic;
+// 	char parameter[10];
+// 	char line[50];
+// 	char copy[50];
+
+
+// 	do{
+// 		fscanf(file, "%[^\n] ", line);
+// 		strcpy(copy, line);
+// 		strcpy(parameter, strtok(copy, " "));
+// 		// printf("%s\n", line);
+
+// 		switch(parameter[0]){
+// 			case 'm' :{ 
+// 				sscanf(line, "%*s %s", levelMusic);
+// 			}
+// 			break;
+
+// 			default:
+// 			break;
+
+// 		}
+
+// 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+// 	fclose(file);
+// 	printf("level : %s", levelMusic);
+
+// 	return levelMusic;
+// }
+
 
 
 Quadtree Level::quadtreeFromFile(std::string filename){
@@ -211,7 +249,7 @@ std::vector<Portail> Level::portailsFromFile(std::string filename){
 
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
-
+	fclose(file);
 	return portails;
 
 }

@@ -18,7 +18,6 @@ void GameEnvironment::startGame(){
 			case 0 :
 				int level;
 				level = choiceLevel(this->window);
-				printf("level vaut %d\n", level);
 				if (level >= 0){
 					this->loadLevel(level);
 					this->play(level);
@@ -60,6 +59,7 @@ void GameEnvironment::play(int level){
 
 		this->level.updateLocalEnv();
 		this->level.updatePlayer();
+		// this->level.music.play();
 
 		
 		char path[50];
