@@ -19,6 +19,8 @@ void GameEnvironment::startGame(){
 				int level;
 				level = choiceLevel(this->window);
 				if (level >= 0){
+					
+					//this->level.setBackground(level+1, this->window);
 					this->loadLevel(level);
 					this->play(level);
 
@@ -60,11 +62,13 @@ void GameEnvironment::play(int level){
 		this->level.updateLocalEnv();
 		this->level.updatePlayer();
 		// this->level.music.play();
+		//this->level.setBackground(level+1, this->window);
 
-		
 		char path[50];
 		sprintf(path, "levels/level%d", level+1);
 		this->level.display(this->window, path);
+		//textureBackground(this->level.background, this->window);
+		
 
 		if(this->level.nextLevel()){
 			
@@ -73,7 +77,8 @@ void GameEnvironment::play(int level){
 				this->window.zoom=1;
 				windowResize(this->window.scrW, this->window.scrH, this->window);	
 				
-			}else{ 
+			}else{
+			deleteTexture(&this->level.background);
 			this->loadLevel(level+1);
 			this->play(level+1);
 			}
@@ -162,8 +167,11 @@ void GameEnvironment::manageEvents(){
 
 void GameEnvironment::loadLevel(int level){
 	char path[50];
+	char path2[50];
 	sprintf(path, "levels/level%d", level+1);
 	this->window.zoom = this->level.getZoom(path);
-	this->level = Level(path);
+	sprintf(path2, "src/background/%d.png", level+1);
+	this->level = Level(path, path2);
+	//this->level.setBackground(level+1, this->window);
 	windowResize(this->window.scrW, this->window.scrH, this->window);
 }

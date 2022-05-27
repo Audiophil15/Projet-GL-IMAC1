@@ -147,6 +147,34 @@ void textureBackground(GLuint texture, Window win){
         glDisable(GL_TEXTURE_2D);
 }
 
+void textureBackgroundfromBorne(GLuint texture, int x, int y){
+	//texture
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);
+
+			glTexCoord2f(0,1);
+            glVertex2f(0,0);
+
+			glTexCoord2f(1,1);
+            glVertex2f(x, 0);
+
+			glTexCoord2f(1,0);
+            glVertex2f(x, y);
+
+			glTexCoord2f(0,0);
+            glVertex2f(0, y);
+
+        glEnd();
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+}
+
+
 
 void textureMenu(Choice texture){
 	//texture

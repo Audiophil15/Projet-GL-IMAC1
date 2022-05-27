@@ -16,7 +16,7 @@
 
 Level::Level(){}
 
-Level::Level(std::string filename):currentPlayerIndex(0){
+Level::Level(std::string filename, std::string bgName):currentPlayerIndex(0){
 	this->map = this->mapFromFile(filename);
 	// printf("after creation (%d) :\n", this->map.size()); // debug
 	// for (Block b:this->map){
@@ -29,6 +29,10 @@ Level::Level(std::string filename):currentPlayerIndex(0){
 	//this->getZoom(filename);
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
+
+	//std::string path = "src/backrgound/"+std::to_string(level)+".png";
+	//printf("background : %s",path.c_str());
+	this->background = initializeTexure(bgName);
 	
 	//this->music.initializeFromFile(filename);
 }
@@ -206,7 +210,7 @@ Quadtree Level::quadtreeFromFile(std::string filename){
 
 	Quadtree tree(xmin, ymin, xmax, ymax);
 
-	fclose(file);
+	//fclose(file);
 	return tree;
 }
 
@@ -336,6 +340,15 @@ void Level::updateCamera(Window window, std::string filename){ // DEPLACER DANS 
 
 }
 
+void Level::setBackground(int bgName, Window window){
+	//char path[50];
+	/*std::string path = "src/backrgound/"+std::to_string(bgName)+".png";
+	printf("background : %s",path.c_str());*/
+	this->background = initializeTexure("src/background-agra.png");
+	textureBackground(this->background, window);
+	
+}
+
 
 Block* Level::getCurrentPlayer(){
 	return this->currentPlayer;
@@ -369,7 +382,9 @@ int Level::gameOver(){
 void Level::updateLocalEnv(){
 	// DEBUG
 	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY())
+	//this->localEnv = this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
 	
+
 	for(int i=0; i<this->characters.size(); i++){
 		if(i!=this->currentPlayerIndex){
 
@@ -378,8 +393,12 @@ void Level::updateLocalEnv(){
 	}
 }
 
+
+
 void Level::display(Window window, std::string filename){
+
 	this->updateCamera(window, filename);
+	//textureBackground(this->background, window);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -388,10 +407,42 @@ void Level::display(Window window, std::string filename){
 	// glColor3f(1,0,0);
 	// axis(window.baseW, window.baseH);
 
+	glm::vec2 bornes = this->getBornes(filename);
+	/*glPushMatrix();
+		textureBackgroundfromBorne(this->background, bornes.x*window.zoom, bornes.y*window.zoom);
+		glTranslatef(this->camera.getX(), this->camera.getY(), 0);
+	glPopMatrix();*/
+
+
+	/*glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, this->background);
+
+
+		glBegin(GL_QUADS);
+			glColor3f(1,1,1);
+
+			glTexCoord2f(0,1);
+            glVertex2f(0,0);
+
+			glTexCoord2f(1,1);
+            glVertex2f(bornes.x*window.zoom, 0);
+
+			glTexCoord2f(1,0);
+            glVertex2f(bornes.x*window.zoom, bornes.y*window.zoom);
+
+			glTexCoord2f(0,0);
+            glVertex2f(0, bornes.y*window.zoom);
+
+        glEnd();
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);*/
+
 	glPushMatrix();
 		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
 		// glColor3f(0,1,0);
 		// axis(window.baseW, window.baseH);
+		textureBackgroundfromBorne(this->background, bornes.x, bornes.y);
 		this->currentPlayer->drawSelect();
 
 		for (Portail p : this->exits){
@@ -410,6 +461,8 @@ void Level::display(Window window, std::string filename){
 	glPopMatrix();
 
 	SDL_GL_SwapWindow(window.SDLWindow);
+
+
 
 }
 

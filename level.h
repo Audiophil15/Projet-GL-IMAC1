@@ -1,6 +1,6 @@
 #ifndef LEVEL_H
 #define LEVEL_H
-
+#include <SDL2/SDL_image.h>
 #include <string>
 #include "block.h"
 #include "camera.h"
@@ -9,6 +9,7 @@
 #include "portail.h"
 #include "string"
 #include "window.h"
+#include "graphics.h"
 
 class Level{
 
@@ -22,8 +23,6 @@ class Level{
 		int currentPlayerIndex;
 		Block* currentPlayer;
 
-		
-
 
 		std::vector<Block> mapFromFile(std::string filename);
 		std::vector<Block*> charactersFromFile(std::string filename);
@@ -36,7 +35,7 @@ class Level{
 	public :
 
 		Level();
-		Level(std::string filename);
+		Level(std::string filename, std::string bgName);
 
 		void manageEvent(SDL_Event);
 		void display(Window, std::string filename);
@@ -52,6 +51,8 @@ class Level{
 		int foundPortail();
 		int nextLevel();
 		int gameOver();
+		GLuint background;
+		void setBackground(int bgName, Window window);
 
 };
 

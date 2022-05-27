@@ -22,6 +22,7 @@ int mapWindowToGLcoordinateY(int windowCoord, Window w);
 
 GLuint initializeTexure(std::string chemin);
 void textureBackground(GLuint texture, Window win);
+void textureBackgroundfromBorne(GLuint texture, int x, int y);
 void textureMenu(Choice texture);
 void textureMenuTop(Choice texture);
 void deleteTexture(GLuint *texture);
