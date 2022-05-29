@@ -60,7 +60,6 @@ void GameEnvironment::play(int level){
 		this->manageEvents();
 
 		this->level.updateLocalEnv();
-		// this->level.updateMovingPlatforms();
 		this->level.updatePlayer();
 		// this->level.music.play();
 		//this->level.setBackground(level+1, this->window);

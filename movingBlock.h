@@ -22,7 +22,7 @@ class movingBlock : public Block{
 		movingBlock(double x, double y, double xmax, double ymax, double w, double h, float adh, int accX, int accY, double r, double g, double b);
 		movingBlock(double x, double y, double xmax, double ymax, double w, double h, float adh, int accX, int accY, double r, double g, double b, float j);
 
-		void updateAcceleration();
+		void updatePosition();
 
 };
 

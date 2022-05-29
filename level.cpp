@@ -32,8 +32,6 @@ Level::Level(std::string filename, std::string bgName):currentPlayerIndex(0){
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
 
-	//std::string path = "src/backrgound/"+std::to_string(level)+".png";
-	//printf("background : %s",path.c_str());
 	this->background = initializeTexure(bgName);
 
 	//this->music.initializeFromFile(filename);
@@ -49,28 +47,23 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 	double b=1;
 	double v, d1, d2, d3, d4;
 	//int zoom = 1;
-	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
+	char parameter[10];
 
-	char line[50];// = (char *) malloc( 50 * sizeof(char));
-	char copy[50];// = (char *) malloc(strlen(line) + 1);
+	char line[50];
+	char copy[50];
 
-	char test[10];// = (char *) malloc( 10 * sizeof(char));
+	char test[10];
 
 	do{
 		fscanf(file, "%[^\n] ", line);
 		strcpy(copy, line);
 		strcpy(parameter, strtok(copy, " "));
-		// printf("parameter :: %c\n", parameter[0]); //debug
-
 
 		switch(parameter[0]){
 			case 'c' :
 				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
 
-			/*case 'z' :
-				sscanf(line, "%*s %d", &zoom);
-			break;*/
 
 			default:
 			break;
@@ -108,12 +101,12 @@ std::vector<movingBlock*> Level::movingPlatformsFromFile(std::string filename){
 	double b=1;
 	double v, d1, d2, d3, d4, d5, d6;
 	//int zoom = 1;
-	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
+	char parameter[10];
 
-	char line[50];// = (char *) malloc( 50 * sizeof(char));
-	char copy[50];// = (char *) malloc(strlen(line) + 1);
+	char line[50];
+	char copy[50];
 
-	char test[10];// = (char *) malloc( 10 * sizeof(char));
+	char test[10];
 
 
 	do{
@@ -128,10 +121,6 @@ std::vector<movingBlock*> Level::movingPlatformsFromFile(std::string filename){
 				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
 			break;
 
-			/*case 'z' :
-				sscanf(line, "%*s %d", &zoom);
-			break;*/
-
 			default:
 			break;
 		}
@@ -144,22 +133,9 @@ std::vector<movingBlock*> Level::movingPlatformsFromFile(std::string filename){
 		strcpy(copy, line);
 		strcpy(parameter, strtok(copy, " "));
 		if (parameter[0] == 'o'){
-			printf("RAH\n");
-			// v = 0;
 				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf", &d1, &d2, &d3, &d4, &d5, &d6);
-
-			// sscanf(line, "%*s");
-			// v += sscanf(line, "%lf", &d1);
-			// v += sscanf(line, "%lf", &d2);
-			// v += sscanf(line, "%lf", &d3);
-			// v += sscanf(line, "%lf", &d4);
-			// v += sscanf(line, "%lf", &d5);
-			// v += sscanf(line, "%lf", &d6);
-
-			// if (v == 6){
 				movingBlock* block = new movingBlock(d1, d2, d3, d4, d5, d6, r,g,b);
 				blocks.push_back(block);
-			// }
 		}
 	} while ((parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
@@ -458,10 +434,7 @@ void Level::updateLocalEnv(){
 	//this->localEnv = this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
 
 	for (movingBlock* mb : this->movingPlatforms){
-		printf("%f, %f\n", mb->getPosX(), mb->getPosY());
-		printf("lala\n\n"); //debug
-		mb->updateAcceleration();
-		// mb->updatePosition();
+		mb->updatePosition();
 		this->localEnv.push_back(*mb);
 	}
 
