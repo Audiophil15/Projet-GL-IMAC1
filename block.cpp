@@ -9,12 +9,9 @@
 
 Block::Block():Rectangle{0,0,25,25,1,1,1}, speed({0,0}), acc({0,0}), adherence(1),jumpValue(21.){}
 
-
 Block::Block(double x, double y, double w, double h):Rectangle{x,y,w,h,1,1,1}, speed({0,0}), acc({0,0}), adherence(1),jumpValue(21.){}
 
-
 Block::Block(double x, double y, double w, double h, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({0, 0}), adherence(1), jumpValue(21.){}
-
 
 Block::Block(double x, double y, double w, double h, float adh, int accX, int accY, double r, double g, double b):Rectangle{x,y,w,h,r,g,b}, speed({0,0}), acc({accX, accY}), adherence(adh), jumpValue(21.){}
 
@@ -85,6 +82,17 @@ void Block::updatePosition(std::vector<Block> environment){
 		}
 		// printf("\n");
 	}
+
+}
+
+void Block::updatePosition(){
+
+	double dt = 1.0/60;
+
+	this->speed.x += this->acc.x*dt;
+	this->speed.y += this->acc.y*dt;
+	this->position.x += this->speed.x*dt;
+	this->position.y += this->speed.y*dt;
 
 }
 

@@ -12,14 +12,14 @@
 GameEnvironment::GameEnvironment():quit(0){}
 
 void GameEnvironment::startGame(){
-	
+
 	while (!this->quit){
 		switch (mainMenu(this->window)){
 			case 0 :
 				int level;
 				level = choiceLevel(this->window);
 				if (level >= 0){
-					
+
 					//this->level.setBackground(level+1, this->window);
 					this->loadLevel(level);
 					this->play(level);
@@ -60,6 +60,7 @@ void GameEnvironment::play(int level){
 		this->manageEvents();
 
 		this->level.updateLocalEnv();
+		// this->level.updateMovingPlatforms();
 		this->level.updatePlayer();
 		// this->level.music.play();
 		//this->level.setBackground(level+1, this->window);
@@ -68,15 +69,15 @@ void GameEnvironment::play(int level){
 		sprintf(path, "levels/level%d", level+1);
 		this->level.display(this->window, path);
 		//textureBackground(this->level.background, this->window);
-		
+
 
 		if(this->level.nextLevel()){
-			
+
 			if(level+2 > LAST_LEVEL){
 				this->gameloop=0;
 				this->window.zoom=1;
-				windowResize(this->window.scrW, this->window.scrH, this->window);	
-				
+				windowResize(this->window.scrW, this->window.scrH, this->window);
+
 			}else{
 			deleteTexture(&this->level.background);
 			this->loadLevel(level+1);
@@ -88,7 +89,7 @@ void GameEnvironment::play(int level){
 			this->gameloop=0;
 			this->gameOver = 1;
 			this->window.zoom=1;
-			windowResize(this->window.scrW, this->window.scrH, this->window);	
+			windowResize(this->window.scrW, this->window.scrH, this->window);
 		}
 
 	}

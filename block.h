@@ -8,15 +8,16 @@
 class Block : public Rectangle {
 	using Rectangle::Rectangle;
 
-	private:
+	protected:
+
 		glm::vec2 speed;
-		glm::vec2 acc;
 		float adherence;
 		float jumpValue;
 		int isMovingRight, isMovingLeft, isJumping;
 		const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	public:
+		glm::vec2 acc;
 
 		Block();
 		Block(double x, double y, double w, double h);
@@ -36,9 +37,9 @@ class Block : public Rectangle {
 		int hover(Block b);
 		int isUnder(Block b);
 
-
 		void jump();
 		void stop();
+		void updatePosition();
 		void updatePosition(std::vector<Block> environment);
 		void moveFromInputs();
 		void printInputs();

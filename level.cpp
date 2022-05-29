@@ -10,6 +10,7 @@
 #include "level.h"
 
 #include "block.h"
+#include "movingBlock.h"
 #include "camera.h"
 #include "quadtree.h"
 #include "music.h"
@@ -18,6 +19,7 @@ Level::Level(){}
 
 Level::Level(std::string filename, std::string bgName):currentPlayerIndex(0){
 	this->map = this->mapFromFile(filename);
+	this->movingPlatforms = this->movingPlatformsFromFile(filename);
 	// printf("after creation (%d) :\n", this->map.size()); // debug
 	// for (Block b:this->map){
 	// 	b.props();
@@ -33,7 +35,7 @@ Level::Level(std::string filename, std::string bgName):currentPlayerIndex(0){
 	//std::string path = "src/backrgound/"+std::to_string(level)+".png";
 	//printf("background : %s",path.c_str());
 	this->background = initializeTexure(bgName);
-	
+
 	//this->music.initializeFromFile(filename);
 }
 
@@ -95,6 +97,77 @@ std::vector<Block> Level::mapFromFile(std::string filename){
 	return blocks;
 
 }
+
+std::vector<movingBlock*> Level::movingPlatformsFromFile(std::string filename){
+	std::vector<movingBlock*> blocks;
+
+	FILE* file = fopen(filename.c_str() , "r");
+	char p;
+	double r=1;
+	double g=1;
+	double b=1;
+	double v, d1, d2, d3, d4, d5, d6;
+	//int zoom = 1;
+	char parameter[10];// = (char *) malloc( 10 * sizeof(char));
+
+	char line[50];// = (char *) malloc( 50 * sizeof(char));
+	char copy[50];// = (char *) malloc(strlen(line) + 1);
+
+	char test[10];// = (char *) malloc( 10 * sizeof(char));
+
+
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("parameter :: %c\n", parameter[0]); //debug
+
+
+		switch(parameter[0]){
+			case 'c' :
+				sscanf(line, "%*s %lf %lf %lf", &r, &g, &b);
+			break;
+
+			/*case 'z' :
+				sscanf(line, "%*s %d", &zoom);
+			break;*/
+
+			default:
+			break;
+		}
+
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+	fseek(file, 0, 0);
+	do {
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		if (parameter[0] == 'o'){
+			printf("RAH\n");
+			// v = 0;
+				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf", &d1, &d2, &d3, &d4, &d5, &d6);
+
+			// sscanf(line, "%*s");
+			// v += sscanf(line, "%lf", &d1);
+			// v += sscanf(line, "%lf", &d2);
+			// v += sscanf(line, "%lf", &d3);
+			// v += sscanf(line, "%lf", &d4);
+			// v += sscanf(line, "%lf", &d5);
+			// v += sscanf(line, "%lf", &d6);
+
+			// if (v == 6){
+				movingBlock* block = new movingBlock(d1, d2, d3, d4, d5, d6, r,g,b);
+				blocks.push_back(block);
+			// }
+		}
+	} while ((parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+
+	fclose(file);
+	return blocks;
+
+}
+
 
 std::vector<Block*> Level::charactersFromFile(std::string filename){
 	std::vector<Block*> characters;
@@ -161,7 +234,7 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 // 		// printf("%s\n", line);
 
 // 		switch(parameter[0]){
-// 			case 'm' :{ 
+// 			case 'm' :{
 // 				sscanf(line, "%*s %s", levelMusic);
 // 			}
 // 			break;
@@ -239,7 +312,7 @@ std::vector<Portail> Level::portailsFromFile(std::string filename){
 		// printf("%s\n", line);
 
 		switch(parameter[0]){
-			case 'e' :{ 
+			case 'e' :{
 				sscanf(line, "%*s %lf %lf %lf %lf %lf %lf %lf", &x, &y, &sizeX, &sizeY, &r, &g, &b);
 				Portail exit(x, y, sizeX, sizeY, r,g,b);
 				portails.push_back(exit);
@@ -273,7 +346,7 @@ double Level::getZoom(std::string filename){
 		strcpy(parameter, strtok(copy, " "));
 
 		switch(parameter[0]){
-			case 'z' : { 
+			case 'z' : {
 				sscanf(line, "%*s %lf", &zoom);
 			}
 			break;
@@ -306,7 +379,7 @@ glm::vec2 Level::getBornes(std::string filename){
 		strcpy(parameter, strtok(copy, " "));
 
 		switch(parameter[0]){
-			case 'b' : { 
+			case 'b' : {
 				sscanf(line, "%*s %f %f" , &border.x, &border.y);
 			}
 			break;
@@ -316,7 +389,7 @@ glm::vec2 Level::getBornes(std::string filename){
 		}
 
 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
-	
+
 	fclose(file);
 	return border;
 }
@@ -346,7 +419,7 @@ void Level::setBackground(int bgName, Window window){
 	printf("background : %s",path.c_str());*/
 	this->background = initializeTexure("src/background-agra.png");
 	textureBackground(this->background, window);
-	
+
 }
 
 
@@ -383,7 +456,14 @@ void Level::updateLocalEnv(){
 	// DEBUG
 	this->localEnv = this->map;//this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY())
 	//this->localEnv = this->platformsTree.findChild(this->currentPlayer->getPosX(), this->currentPlayer->getPosY());
-	
+
+	for (movingBlock* mb : this->movingPlatforms){
+		printf("%f, %f\n", mb->getPosX(), mb->getPosY());
+		printf("lala\n\n"); //debug
+		mb->updateAcceleration();
+		// mb->updatePosition();
+		this->localEnv.push_back(*mb);
+	}
 
 	for(int i=0; i<this->characters.size(); i++){
 		if(i!=this->currentPlayerIndex){
@@ -398,50 +478,16 @@ void Level::updateLocalEnv(){
 void Level::display(Window window, std::string filename){
 
 	this->updateCamera(window, filename);
-	//textureBackground(this->background, window);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// glColor3f(1,0,0);
-	// axis(window.baseW, window.baseH);
-
 	glm::vec2 bornes = this->getBornes(filename);
-	/*glPushMatrix();
-		textureBackgroundfromBorne(this->background, bornes.x*window.zoom, bornes.y*window.zoom);
-		glTranslatef(this->camera.getX(), this->camera.getY(), 0);
-	glPopMatrix();*/
 
-
-	/*glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, this->background);
-
-
-		glBegin(GL_QUADS);
-			glColor3f(1,1,1);
-
-			glTexCoord2f(0,1);
-            glVertex2f(0,0);
-
-			glTexCoord2f(1,1);
-            glVertex2f(bornes.x*window.zoom, 0);
-
-			glTexCoord2f(1,0);
-            glVertex2f(bornes.x*window.zoom, bornes.y*window.zoom);
-
-			glTexCoord2f(0,0);
-            glVertex2f(0, bornes.y*window.zoom);
-
-        glEnd();
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glDisable(GL_TEXTURE_2D);*/
 
 	glPushMatrix();
 		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
-		// glColor3f(0,1,0);
-		// axis(window.baseW, window.baseH);
 		textureBackgroundfromBorne(this->background, bornes.x, bornes.y);
 		this->currentPlayer->drawSelect();
 
@@ -451,25 +497,24 @@ void Level::display(Window window, std::string filename){
 
 		for (Block* character:this->characters){
 			character->draw();
-			
 		}
+
 		for (Block b : this->localEnv){
 			b.draw();
 		}
+
 		this->platformsTree.depth(1); //debug
 
 	glPopMatrix();
 
 	SDL_GL_SwapWindow(window.SDLWindow);
 
-
-
 }
 
 void Level::updatePlayer(){
 	this->getCurrentPlayer()->moveFromInputs();
 	this->getCurrentPlayer()->updatePosition(this->localEnv);
-	
+
 }
 
 void Level::switchCharacter(){

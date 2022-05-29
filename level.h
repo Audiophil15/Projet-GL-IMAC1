@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include "block.h"
+#include "movingBlock.h"
 #include "camera.h"
 #include "music.h"
 #include "quadtree.h"
@@ -15,6 +16,7 @@ class Level{
 
 	private :
 		std::vector<Block> map;
+		std::vector<movingBlock*> movingPlatforms;
 		std::vector<Block> localEnv;
 		std::vector<Block*> characters;
 		std::vector<Portail> exits;
@@ -25,6 +27,7 @@ class Level{
 
 
 		std::vector<Block> mapFromFile(std::string filename);
+		std::vector<movingBlock*> movingPlatformsFromFile(std::string filename);
 		std::vector<Block*> charactersFromFile(std::string filename);
 		Quadtree quadtreeFromFile(std::string filename);
 		std::vector<Portail> portailsFromFile(std::string filename);
@@ -42,7 +45,8 @@ class Level{
 		void switchCharacter();
 		void updateCamera(Window, std::string filename);
 		void updateLocalEnv();
-		// Music music;	
+		void updateMovingPlatforms();
+		// Music music;
 
 		Block* getCurrentPlayer();
 		void updatePlayer();
