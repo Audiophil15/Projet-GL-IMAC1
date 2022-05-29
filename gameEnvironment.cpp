@@ -6,6 +6,7 @@
 #include "graphics.h"
 #include "window.h"
 #include "menu.h"
+#include "music.h"
 
 #define LAST_LEVEL 7
 
@@ -61,13 +62,15 @@ void GameEnvironment::play(int level){
 
 		this->level.updateLocalEnv();
 		this->level.updatePlayer();
+		char chemin[50];
+		sprintf(chemin, "./src/sons/niveau%d", level+1);
+		// this->level.levelMusic.initializeFromFile(chemin);
+		this->level.setMusic(chemin);
 		// this->level.music.play();
-		//this->level.setBackground(level+1, this->window);
 
 		char path[50];
 		sprintf(path, "levels/level%d", level+1);
 		this->level.display(this->window, path);
-		//textureBackground(this->level.background, this->window);
 		
 
 		if(this->level.nextLevel()){
@@ -79,6 +82,7 @@ void GameEnvironment::play(int level){
 				
 			}else{
 			deleteTexture(&this->level.background);
+			//arret music
 			this->loadLevel(level+1);
 			this->play(level+1);
 			}

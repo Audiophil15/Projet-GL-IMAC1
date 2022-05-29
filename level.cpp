@@ -30,11 +30,12 @@ Level::Level(std::string filename, std::string bgName):currentPlayerIndex(0){
 	// this->platformsTree.initialize(this->map);
 	this->currentPlayer = this->characters[this->currentPlayerIndex];
 
-	//std::string path = "src/backrgound/"+std::to_string(level)+".png";
-	//printf("background : %s",path.c_str());
+
 	this->background = initializeTexure(bgName);
+
+
+	this->music = this->musicFromFile(filename);
 	
-	//this->music.initializeFromFile(filename);
 }
 
 std::vector<Block> Level::mapFromFile(std::string filename){
@@ -145,39 +146,43 @@ std::vector<Block*> Level::charactersFromFile(std::string filename){
 
 }
 
-// std::string Level::musicFromFile(std::string filename){
+Music Level::musicFromFile(std::string filename){
 
-// 	FILE* file = fopen(filename.c_str() , "r");
-// 	char* levelMusic;
-// 	char parameter[10];
-// 	char line[50];
-// 	char copy[50];
+	FILE* file = fopen(filename.c_str() , "r");
+	char* levelMusic;
+	char parameter[10];
+	char line[50];
+	char copy[50];
 
 
-// 	do{
-// 		fscanf(file, "%[^\n] ", line);
-// 		strcpy(copy, line);
-// 		strcpy(parameter, strtok(copy, " "));
-// 		// printf("%s\n", line);
+	do{
+		fscanf(file, "%[^\n] ", line);
+		strcpy(copy, line);
+		strcpy(parameter, strtok(copy, " "));
+		// printf("%s\n", line);
 
-// 		switch(parameter[0]){
-// 			case 'm' :{ 
-// 				sscanf(line, "%*s %s", levelMusic);
-// 			}
-// 			break;
+		switch(parameter[0]){
+			case 'm' :{ 
+				sscanf(line, "%*s %s", levelMusic);
+				//initialisation de la musique
+				
 
-// 			default:
-// 			break;
+			}
+			break;
 
-// 		}
+			default:
+			break;
 
-// 	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
+		}
 
-// 	fclose(file);
-// 	printf("level : %s", levelMusic);
+	} while ( (parameter[0]>='a' && parameter[0]<='z') || (parameter[0]>='A' && parameter[0]<='Z'));
 
-// 	return levelMusic;
-// }
+
+	Music m(levelMusic);
+	fclose(file);
+
+	return m;
+}
 
 
 
@@ -393,6 +398,12 @@ void Level::updateLocalEnv(){
 	}
 }
 
+void Level::setMusic(std::string nameMusic){
+
+	// this->music = musicFromFile(nameMusic);
+	this->music.play();
+}
+
 
 
 void Level::display(Window window, std::string filename){
@@ -437,6 +448,7 @@ void Level::display(Window window, std::string filename){
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);*/
+		
 
 	glPushMatrix();
 		glTranslatef(-this->camera.getX(), -this->camera.getY(), 0);
@@ -459,6 +471,7 @@ void Level::display(Window window, std::string filename){
 		this->platformsTree.depth(1); //debug
 
 	glPopMatrix();
+
 
 	SDL_GL_SwapWindow(window.SDLWindow);
 

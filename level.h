@@ -22,6 +22,7 @@ class Level{
 		Camera camera;
 		int currentPlayerIndex;
 		Block* currentPlayer;
+		// Music levelMusic;
 
 
 		std::vector<Block> mapFromFile(std::string filename);
@@ -29,7 +30,7 @@ class Level{
 		Quadtree quadtreeFromFile(std::string filename);
 		std::vector<Portail> portailsFromFile(std::string filename);
 
-		// std::string musicFromFile(std::string filename);
+		Music musicFromFile(std::string filename);
 
 
 	public :
@@ -42,7 +43,7 @@ class Level{
 		void switchCharacter();
 		void updateCamera(Window, std::string filename);
 		void updateLocalEnv();
-		// Music music;	
+			
 
 		Block* getCurrentPlayer();
 		void updatePlayer();
@@ -53,6 +54,9 @@ class Level{
 		int gameOver();
 		GLuint background;
 		void setBackground(int bgName, Window window);
+
+		Music music;
+		void setMusic(std::string filename);
 
 };
 
