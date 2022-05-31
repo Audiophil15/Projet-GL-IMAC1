@@ -1,5 +1,5 @@
 # projet SDL
-This a student project realised during the French engineering school IMAC.
+This is a student project realised at the French engineering school IMAC, for the second semester.
 
 ## Prerequisites
 OpenGL
@@ -13,7 +13,7 @@ SDL2_image
 
 SDL2_mixer
 
-### Linux
+### Ubuntu (and other systems using Ubuntu's repos)
 OpenGL
 
 
@@ -41,21 +41,20 @@ SDL2_mixer
 `make`
 
 
-it means that you using the `Makefile` to build the project
+Uses the `Makefile` to build the project.
 
 ## Launch
 `./main`
 
 
-It means that you are launching the compiled main. 
-Make sure that the working file is set to the racine folder.
+Make sure to run the command in the root folder of the project.
 
 # Additional info
 ## Dependencies
 OpenGL : The graphic API used
 
 
-SDL2 : The library ysed to create a valid OpenGl context
+SDL2 : The library used to create a valid OpenGl context, a window, and manage input events, among other things.
 
 ## Inspired by
 Thomas Was Alone
